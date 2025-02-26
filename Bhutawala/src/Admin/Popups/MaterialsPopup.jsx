@@ -1,20 +1,17 @@
-import { useFormik } from "formik";
-import { getData, postData } from "../../API";
-import { MaterialSchema } from "../../Schema";
-import { useEffect, useRef, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-
-export default function MaterialsPopup({ show, setShow, fetchMaterials, initialValues, setInitialValues }) {
-  const [Categories, setCategories] = useState([]);
-  const [MaterialId, setMaterialId] = useState(0);
-  const [loading, setLoading] = useState(false);
+import { useFormik } from 'formik'
+import React, { useEffect, useState } from 'react'
+import { MaterialSchema } from '../../Schema';
+import { getData, postData } from '../../API';
+export default function MaterialPopup(props) {
+  const [categories, setCategories] = useState([]);
 
   const fetchCategories = async () => {
     try {
-      const responseResult = await getData("Category/List");
-      if (responseResult.status == "OK") {
-        setCategories(responseResult.result);
-        console.log(responseResult.result);
+      const response = await getData("Category/List");
+      console.log(response)
+      if (response.status == "OK") {
+        setCategories(response.result);
+        console.log(response.result);
       } else {
         console.log("Something went wrong");
       }
@@ -22,272 +19,160 @@ export default function MaterialsPopup({ show, setShow, fetchMaterials, initialV
       console.error("Error fetching data in component:", error);
     }
   };
-  useEffect(() => { fetchCategories(); }, []);
-  const formik = useFormik({ enableReinitialize: true, initialValues: initialValues, validationSchema: MaterialSchema, onSubmit: (values) => { postMaterialData(values); }, });
-  const postMaterialData = async (data) => {
-    setLoading(true);
-    const postRequest = {
-      MaterialName: data.MaterialName,
-      categoryId: data.CategoryId,
-      Unit: data.Unit,
-      Qty: data.Qty,
-      Net_Qty: data.Net_Qty,
-      Description: data.Description,
-      Brand: data.Brand,
-      GST: data.GST,
-      GST_Type: data.GST_Type,
-    };
-    try {
-      const result = await postData(
-        MaterialId == 0 ? "Material/Save" : "Material/Edit",
-        postRequest
-      );
-      console.log(result);
-      if (result.status === "Ok") {
-        console.log("Save Material");
-        fetchMaterials();
-        cancleForm();
-      } else {
-        console.log("Material Exists");
+  const { handleSubmit, handleChange, handleBlur, errors, values, setFieldValue } = useFormik({
+    enableReinitialize: true,
+    initialValues: props.initialValue,
+    validationSchema: MaterialSchema,
+    onSubmit: async (values) => {
+      const requestData = {
+        CategoryId: values.CategoryId,
+        MaterialName: values.MaterialName,
+        Unit: values.Unit,
+        Qty: values.Qty,
+        Net_Qty: values.Net_Qty,
+        Description: values.Description,
+        Brand: values.Brand,
+        GST: values.GST,
+        GST_Type: values.GST_Type,
+        MaterialId: props.MaterialId
+      };
+      try {
+        props.setLoading(true);
+        const result = await postData(
+          props.MaterialId === 0 ? "Material/Save" : "Material/Edit",
+          requestData
+        );
+        console.log(result);
+        if (result.status.toUpperCase() === "OK") {
+          alert("Successsfully Saved");
+          props.fetchMaterials();
+          clearForm();
+        }
+        else {
+          alert("Already Exists");
+        }
       }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error posting data in component:", error);
-      setLoading(false);
+      catch (error) {
+        console.error("Error posting data in component:", error.message);
+      }
+      finally {
+        props.setLoading(false);
+      }
     }
-    console.log(postRequest);
-  };
+  });
 
-  const cancleForm = () => { setCategoryId(0); setInitialValues({ MaterialId: "" }); };
-  const openModal = () => { const modal = new window.bootstrap.Modal(modalRef.current); modal.show(); };
-  const changeDropDown = (value, FiledName) => { formik.setFieldValue(FiledName, value); };
+  const setContentValues = (fieldName, Value) => {
+    setFieldValue(fieldName, Value);
+  }
+
+  const clearForm = () => {
+    props.setInitialValue({
+      CategoryId: "",
+      MaterialName: "",
+      Unit: "",
+      Qty: "",
+      Net_Qty: "",
+      Description: "",
+      Brand: "",
+      GST: "",
+      GST_Type: ""
+    });
+    props.setShow(false);
+  }
+
+  useEffect(() => {
+    fetchCategories(); // Wait until fetchCategories() completes
+    if (props.MaterialId !== 0) {
+      document.getElementById("drpCategoryId").value = values.CategoryId;
+      document.getElementById("drpUnit").value = values.Unit;
+      document.getElementById("drpGST_Type").value = values.GST_Type;
+    }
+  }, [props.MaterialId, values.CategoryId, values.Unit, values.GST_Type]);
+
 
   return (
     <>
-      <div
-        className={show ? "modal show" : "modal"}
-        style={show ? { display: "block" } : null}
-        id="myModal"
-        tabIndex="-1"
-      >
-        <div className="modal-dialog modal-lg">
+      <div className={props.show ? "modal show" : "modal"} style={props.show ? { display: "block" } : null} id="MaterialModal">
+        <div className="modal-dialog modal-xl">
           <div className="modal-content">
-            {/* Modal Header */}
             <div className="modal-header">
-              <h4 className="modal-title">Add New Material</h4>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                onClick={() => {
-                  setShow(false);
-                }}
-              ></button>
+              <h4 className="modal-title">Material</h4>
+              <button type="button" onClick={() => props.setShow(false)} className="btn-close" />
             </div>
-
-            {/* Modal Body */}
             <div className="modal-body">
-              <form className="row g-3" onSubmit={formik.handleSubmit}>
-                {/* Category */}
-                <div className="col-md-6">
-                  <label htmlFor="Category" className="form-label">Category </label>
-                  <select name="Category" id="Category" className="form-select"
-                    onChange={(event) =>
-                      changeDropDown(event.target.value, "CategoryId")
-                    }
-                    onBlur={formik.handleBlur} value={formik.values.Category}
-                  >
-                    {Categories.map((category) => (
-                      <option
-                        key={category.categoryId}
-                        value={category.categoryId}
-                      >
-                        {category.categoryName}
-                      </option>
-                    ))}
-                  </select>
-                  {formik.touched.Category && formik.errors.Category && (<div className="text-danger">{formik.errors.Category}</div>)} </div>
-                <div className="col-md-6">
-                  <label htmlFor="MaterialName" className="form-label">Material </label>
-                  <input id="MaterialName" name="MaterialName" type="text" className="form-control" placeholder="Enter Brand"
-                    onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.MaterialName} />
-                  {formik.touched.MaterialName && formik.errors.MaterialName && (<div className="text-danger"> {formik.errors.MaterialName}</div>)}
-                </div>
-
-                {/* Brand */}
-                <div className="col-md-6">
-                  <label htmlFor="Brand" className="form-label">
-                    Brand
-                  </label>
-                  <input id="Brand" name="Brand" type="text" className="form-control" placeholder="Enter Brand"
-                    onChange={formik.handleChange} onBlur={formik.handleBlur}
-                    value={formik.values.Brand}
-                  />
-                  {formik.touched.Brand && formik.errors.Brand && (
-                    <div className="text-danger">{formik.errors.Brand}</div>
-                  )}
-                </div>
-
-                {/* Unit */}
-                <div className="col-md-3">
-                  <label htmlFor="Unit" className="form-label">
-                    Unit
-                  </label>
-                  <select
-                    name="Unit"
-                    id="Unit"
-                    className="form-control"
-                    onChange={(event) =>
-                      changeDropDown(event.target.value, "Unit")
-                    }
-                    onBlur={formik.handleBlur}
-                    value={formik.values.Unit}
-                  >
-                    <option value="">Select Unit</option>
-                    <option value="KG">KG</option>
-                  </select>
-                  {formik.touched.Unit && formik.errors.Unit && (
-                    <div className="text-danger">{formik.errors.Unit}</div>
-                  )}
-                </div>
-
-                {/* Qty */}
-                <div className="col-md-3">
-                  <label htmlFor="Qty" className="form-label">
-                    Quantity
-                  </label>
-                  <input
-                    id="Qty"
-                    name="Qty"
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter Qty"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.Qty}
-                  />
-                  {formik.touched.Qty && formik.errors.Qty && (
-                    <div className="text-danger">{formik.errors.Qty}</div>
-                  )}
-                </div>
-
-                {/* Net Qty */}
-                <div className="col-md-4">
-                  <label htmlFor="Net_Qty" className="form-label">
-                    Net Quantity
-                  </label>
-                  <input
-                    id="Net_Qty"
-                    name="Net_Qty"
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter Net Qty"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.Net_Qty}
-                  />
-                  {formik.touched.Net_Qty && formik.errors.Net_Qty && (
-                    <div className="text-danger">{formik.errors.Net_Qty}</div>
-                  )}
-                </div>
-
-                {/* GST */}
-                <div className="col-md-4">
-                  <label htmlFor="GST" className="form-label">
-                    GST
-                  </label>
-                  <input
-                    id="GST"
-                    name="GST"
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter GST"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.GST}
-                  />
-                  {formik.touched.GST && formik.errors.GST && (
-                    <div className="text-danger">{formik.errors.GST}</div>
-                  )}
-                </div>
-
-                {/* GST Type */}
-                <div className="col-md-4">
-                  <label htmlFor="GST_Type" className="form-label">
-                    GST Type
-                  </label>
-                  <select
-                    name="GST_Type"
-                    id="GST_Type"
-                    className="form-control"
-                    onChange={(event) =>
-                      changeDropDown(event.target.value, "GST_Type")
-                    }
-                    onBlur={formik.handleBlur}
-                    value={formik.values.GST_Type}
-                  >
-                    <option value="">Select GST Type</option>
-                    <option value="Exclusive">Exclusive</option>
-                  </select>
-                  {formik.touched.GST_Type && formik.errors.GST_Type && (
-                    <div className="text-danger">{formik.errors.GST_Type}</div>
-                  )}
-                </div>
-
-                {/* Description */}
-                <div className="col-md-12">
-                  <label htmlFor="Description" className="form-label">
-                    Description
-                  </label>
-                  <textarea
-                    id="Description"
-                    name="Description"
-                    className="form-control"
-                    placeholder="Enter Description"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.Description}
-                  ></textarea>
-                  {formik.touched.Description && formik.errors.Description && (
-                    <div className="text-danger">
-                      {formik.errors.Description}
+              <form onSubmit={handleSubmit} className='row'>
+                <div className='col-md-6 mb-2'>
+                  <div className="row">
+                    <div className="col-md-12 mb-2">
+                      <b>Category</b>&nbsp;<span className='text-danger'>* {errors.CategoryId}</span>
+                      <select onChange={(e) => setContentValues("CategoryId", e.target.value)} name="CategoryId" id="drpCategoryId" className='form-select'>
+                        <option value="">Select Category</option>
+                        {
+                          categories.map((o, index) => {
+                            return <option value={o.categoryId}>{o.categoryName}</option>
+                          })
+                        }
+                      </select>
                     </div>
-                  )}
-                </div>
+                    <div className="col-md-4 mb-2">
+                      <b>Brand</b> <span className='text-danger'>*{errors.Brand}</span>
+                      <input type="text" value={values.Brand} onChange={handleChange} onBlur={handleBlur} id='Brand' name='Brand' className='form-control' placeholder='Brand' />
+                    </div>
+                    <div className="col-md-8 mb-2">
+                      <b>Name</b> <span className='text-danger'>*{errors.MaterialName}</span>
+                      <input type="text" value={values.MaterialName} onChange={handleChange} onBlur={handleBlur} id='MaterialName' name='MaterialName' className='form-control' placeholder='Material' />
+                    </div>
+                    <div className="col-md-4 mb-2">
+                      <b>Qty</b> <span className='text-danger'>*{errors.Qty}</span>
+                      <input type="text" value={values.Qty} onChange={handleChange} onBlur={handleBlur} id='Qty' name='Qty' className='form-control' placeholder='Qty' />
+                    </div>
+                    <div className="col-md-4 mb-2">
+                      <b>Unit</b> <span className='text-danger'>*{errors.Unit}</span>
+                      <select onChange={(e) => setContentValues("Unit", e.target.value)} name="Unit" id="drpUnit" className='form-select'>
+                        <option value="">Select Unit</option>
+                        <option value="KG">KG</option>
+                        <option value="TONS">TONS</option>
+                      </select>
+                    </div>
+                    <div className="col-md-4 mb-2">
+                      <b>Net Qty</b> <span className='text-danger'>*{errors.Net_Qty}</span>
+                      <input type="text" value={values.Net_Qty} onChange={handleChange} onBlur={handleBlur} id='Net_Qty' name='Net_Qty' className='form-control' placeholder='Net_Qty' />
+                    </div>
 
-                {/* Submit & Close Buttons */}
-                <div className="modal-footer">
-                  <button
-                    disabled={loading}
-                    className="btn btn-primary"
-                    type="submit"
-                  >
-                    {!loading ? (
-                      "Submit"
-                    ) : (
-                      <>
-                        <i className="fas fa-spinner"></i>
-                        &nbsp;Please Wait
-                      </>
-                    )}
-                  </button>
-                  &nbsp;
-                  <button
-                    type="reset"
-                    className="btn btn-danger"
-                    onClick={() => {
-                      setShow(false);
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  </div>
+                </div>
+                <div className='col-md-6 mb-2'>
+                  <div className="row">
+                    <div className="col-md-12 mb-2">
+                      <b>Description</b> <span className='text-danger'>*{errors.Description}</span>
+                      <textarea style={{ height: "102px" }} value={values.Description} onChange={handleChange} onBlur={handleBlur} id='Description' name='Description' className='form-control' placeholder='Description'></textarea>
+                    </div>
+                    <div className="col-md-4 mb-2">
+                      <b>GST</b> <span className='text-danger'>*{errors.GST}</span>
+                      <input type="text" value={values.GST} onChange={handleChange} onBlur={handleBlur} id='GST' name='GST' className='form-control' placeholder='GST' />
+                    </div>
+                    <div className="col-md-8 mb-2">
+                      <b>GST Type</b> <span className='text-danger'>*{errors.GST_Type}</span>
+                      <select onChange={(e) => setContentValues("GST_Type", e.target.value)} name="GST_Type" id="drpGST_Type" className='form-select'>
+                        <option value="">Select Unit</option>
+                        <option value="Inclusive">Inclusive</option>
+                        <option value="Exclusive">Exclusive</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-12 mb-2">
+                  <button id='btnSave' type='submit' disabled={!props.loading ? false : true} className='btn btn-primary btn-lg'>{!props.loading ? "Save" : "Please Wait"}</button>&nbsp;
+                  <button id='btnCancle' onClick={() => clearForm()} type='reset' className='btn btn-danger btn-lg'>Cancle</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-      {show ? <div className="modal-backdrop show"></div> : null}
+      {
+        props.show ? <div className="modal-backdrop show" /> : null
+      }
     </>
-  );
+  )
 }
