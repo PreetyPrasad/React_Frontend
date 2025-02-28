@@ -15,6 +15,7 @@ import InvoiceMaster from "./Admin/InvoiceMaster";
 import InwordStock from "./Admin/InwordStock";
 import PurchaseReturn from "./Admin/PurchaseReturn";
 import InvoiceDetail from "./Admin/InvoiceDetail";
+import PurchasePayment from "./Admin/PurchasePayment";
 
 function App() {
   return (
@@ -26,10 +27,11 @@ function App() {
         <Route path="/Supplier" element={<Demo Component={<Supplier />} />} />
         <Route path="/PurchaseMaster" element={<Demo Component={<PurchaseMaster />} />} />
         <Route path="/StaffMaster" element={<Demo Component={<StaffMaster />} />} />
-        <Route path="/" element={<Demo Component={<InvoiceMaster />} />} />
+        <Route path="/InvoiceMaster" element={<Demo Component={<InvoiceMaster />} />} />
         <Route path="/InwordStock" element={<Demo Component={<InwordStock />} />} />
         <Route path="/PurchaseReturn" element={<Demo Component={<PurchaseReturn />} />} />
         <Route path="/InvoiceDetail" element={<Demo Component={<InvoiceDetail />} />} />
+        <Route path="/" element={<Demo Component={<PurchasePayment />} />} />
         <Route path="/SalesReturn" element={<SalesReturn />} />
 
       </Routes>

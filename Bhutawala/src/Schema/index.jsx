@@ -242,4 +242,26 @@ export const InvoiceDetailSchema = Yup.object().shape({
     .min(0, "Total must be non-negative"),
 });
 
+export const purchasePaymentSchema = Yup.object().shape({
+  PurchaseId: Yup.number()
+    .nullable()
+    .min(1, "Please select a valid Purchase")
+    .required("Purchase is required"),
+
+  Amount: Yup.number()
+    .min(0.01, "Amount must be greater than zero")
+    .required("Amount is required"),
+
+  PaymentMode: Yup.string()
+    .max(50, "Payment Mode cannot exceed 50 characters")
+    .required("Payment Mode is required"),
+
+  RefNo: Yup.string()
+    .max(100, "Reference Number cannot exceed 100 characters")
+    .nullable(),
+
+  PaymentDate: Yup.date()
+    .required("Payment date is required")
+    .max(new Date(), "Payment date cannot be in the future"),
+});
 
