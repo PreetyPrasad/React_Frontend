@@ -4,33 +4,36 @@ import Category from "./Admin/Category";
 import Material from "./Admin/Material";
 import CreditNote from "./Admin/CreditNote";
 import SalesReturn from "./Admin/SalesReturn";
-
 import Demo from "./Demo";
 import Supplier from "./Admin/Supplier";
+import TransactionYearMaster from "./Admin/TransactionYearMaster";
+import PurchaseMaster from "./Admin/PurchaseMaster";
+import StaffMaster from "./Admin/StaffMaster";
 
-
-// Create Context Inside App.jsx
-export const LoadingContext = createContext();
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+import InvoiceMaster from "./Admin/InvoiceMaster";
+import InwordStock from "./Admin/InwordStock";
+import PurchaseReturn from "./Admin/PurchaseReturn";
+import InvoiceDetail from "./Admin/InvoiceDetail";
 
 function App() {
-  const [loading, setLoading] = useState(false); // Global loading state
-
   return (
-    <LoadingContext.Provider value={{ loading, setLoading }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Demo Component={<Category />} />} />
-          <Route path="/Material" element={<Demo Component={<Material />} />} />
-          <Route path="/Supplier" element={<Demo Component={<Supplier />} />} />
-          <Route path="/CreditNote" element={<CreditNote />} />
-          <Route path="/SalesReturn" element={<SalesReturn />} />
-          
+    <BrowserRouter>
+      <Routes>
+        <Route path="/Category" element={<Demo Component={<Category />} />} />
+        <Route path="/Material" element={<Demo Component={<Material />} />} />
+        <Route path="/TransactionYearMaster" element={<Demo Component={<TransactionYearMaster />} />} />
+        <Route path="/Supplier" element={<Demo Component={<Supplier />} />} />
+        <Route path="/PurchaseMaster" element={<Demo Component={<PurchaseMaster />} />} />
+        <Route path="/StaffMaster" element={<Demo Component={<StaffMaster />} />} />
+        <Route path="/" element={<Demo Component={<InvoiceMaster />} />} />
+        <Route path="/InwordStock" element={<Demo Component={<InwordStock />} />} />
+        <Route path="/PurchaseReturn" element={<Demo Component={<PurchaseReturn />} />} />
+        <Route path="/InvoiceDetail" element={<Demo Component={<InvoiceDetail />} />} />
+        <Route path="/SalesReturn" element={<SalesReturn />} />
 
-          
-        </Routes>
-      </BrowserRouter>
-    </LoadingContext.Provider>
+      </Routes>
+    </BrowserRouter>
   );
 }
-
 export default App;

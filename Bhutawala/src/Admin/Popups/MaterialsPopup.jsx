@@ -114,11 +114,11 @@ export default function MaterialPopup(props) {
                         }
                       </select>
                     </div>
-                    <div className="col-md-4 mb-2">
+                    <div className="col-md-6 mb-2">
                       <b>Brand</b> <span className='text-danger'>*{errors.Brand}</span>
                       <input type="text" value={values.Brand} onChange={handleChange} onBlur={handleBlur} id='Brand' name='Brand' className='form-control' placeholder='Brand' />
                     </div>
-                    <div className="col-md-8 mb-2">
+                    <div className="col-md-6 mb-2">
                       <b>Name</b> <span className='text-danger'>*{errors.MaterialName}</span>
                       <input type="text" value={values.MaterialName} onChange={handleChange} onBlur={handleBlur} id='MaterialName' name='MaterialName' className='form-control' placeholder='Material' />
                     </div>
@@ -147,11 +147,11 @@ export default function MaterialPopup(props) {
                       <b>Description</b> <span className='text-danger'>*{errors.Description}</span>
                       <textarea style={{ height: "102px" }} value={values.Description} onChange={handleChange} onBlur={handleBlur} id='Description' name='Description' className='form-control' placeholder='Description'></textarea>
                     </div>
-                    <div className="col-md-4 mb-2">
+                    <div className="col-md-6 mb-2">
                       <b>GST</b> <span className='text-danger'>*{errors.GST}</span>
                       <input type="text" value={values.GST} onChange={handleChange} onBlur={handleBlur} id='GST' name='GST' className='form-control' placeholder='GST' />
                     </div>
-                    <div className="col-md-8 mb-2">
+                    <div className="col-md-6 mb-2">
                       <b>GST Type</b> <span className='text-danger'>*{errors.GST_Type}</span>
                       <select onChange={(e) => setContentValues("GST_Type", e.target.value)} name="GST_Type" id="drpGST_Type" className='form-select'>
                         <option value="">Select Unit</option>

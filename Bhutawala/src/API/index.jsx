@@ -15,28 +15,19 @@ export const getData = async (endpoint) => {
 
 // Create POST method
 export const postData = async (endpoint, data) => {
-    try {
-      const response = await axios.post(
-        `${BASE_URL}${endpoint}`, 
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error posting data:', error);
-      throw error;
-    }
-  };
-export const deleteData = async (endpoint) => {
   try {
-    const response = await axios.delete(`${BASE_URL}${endpoint}`);
+    const response = await axios.post(
+      `${BASE_URL}${endpoint}`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error("Error deleting data:", error);
+    console.error('Error posting data:', error);
     throw error;
   }
 };

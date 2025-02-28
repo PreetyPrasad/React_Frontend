@@ -156,11 +156,13 @@ export default function PurchaseMaster() {
                     <Column field="grossTotal" header="grossTotal"></Column>
                     <Column field="gst" header="GST"></ Column>
                     <Column field="gsT_Type" header="GSTType"></Column>
-                    <Column field="total" header="Total" body={(rowData) => {const totalAmount = (rowData.grossTotal || 0) + (rowData.gst || 0);return (<><i className="pi pi-money-bill" /> ₹{totalAmount.toLocaleString("en-IN")}</>
+                    <Column field="total" header="Total" body={(rowData) => {const totalAmount = (rowData.grossTotal || 0) + (rowData.gst || 0);return (<>
+                      <i className="pi pi-money-bill" /> ₹{totalAmount.toLocaleString("en-IN")}
+                          </>
                         );
                       }}
                     />
-                    <Column field="purchaseDate" header="purchaseDate" body={(rowData) => formatDate(rowData.purchaseDate)}></Column>
+      <Column field="purchaseDate" header="purchaseDate" body={(rowData) => formatDate(rowData.purchaseDate)}></Column>
                     <Column field="noticePeriod" header="Notice Period" body={(rowData) => formatDate(rowData.noticePeriod)} />
                     <Column body={editTemplate}
                       className='text-center' style={{
