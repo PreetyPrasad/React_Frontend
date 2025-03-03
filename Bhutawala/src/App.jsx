@@ -3,19 +3,19 @@ import React, { createContext, useState } from "react";
 import Category from "./Admin/Category";
 import Material from "./Admin/Material";
 import CreditNote from "./Admin/CreditNote";
-import SalesReturn from "./Admin/SalesReturn";
 import Demo from "./Demo";
 import Supplier from "./Admin/Supplier";
 import TransactionYearMaster from "./Admin/TransactionYearMaster";
 import PurchaseMaster from "./Admin/PurchaseMaster";
 import StaffMaster from "./Admin/StaffMaster";
-
 import "primereact/resources/themes/lara-light-cyan/theme.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import InvoiceMaster from "./Admin/InvoiceMaster";
 import InwordStock from "./Admin/InwordStock";
 import PurchaseReturn from "./Admin/PurchaseReturn";
 import InvoiceDetail from "./Admin/InvoiceDetail";
 import PurchasePayment from "./Admin/PurchasePayment";
+
 
 function App() {
   return (
@@ -31,8 +31,9 @@ function App() {
         <Route path="/InwordStock" element={<Demo Component={<InwordStock />} />} />
         <Route path="/PurchaseReturn" element={<Demo Component={<PurchaseReturn />} />} />
         <Route path="/InvoiceDetail" element={<Demo Component={<InvoiceDetail />} />} />
-        <Route path="/" element={<Demo Component={<PurchasePayment />} />} />
-        <Route path="/SalesReturn" element={<SalesReturn />} />
+        <Route path="/PurchasePayment" element={<Demo Component={<PurchasePayment />} />} />
+        <Route path="/" element={<Demo Component={<CreditNote />} />} />
+      
 
       </Routes>
     </BrowserRouter>

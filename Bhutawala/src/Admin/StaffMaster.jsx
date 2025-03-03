@@ -20,7 +20,7 @@ export default function StaffMaster() {
     Age: '',
     Aj: '',
     Email: '',
-    Password: '',
+
 
   });
 
@@ -69,7 +69,7 @@ export default function StaffMaster() {
           Dj: response.result.dj,
           Email: response.result.email,
           AdharNo: response.result.adharNo,
-          Password: response.result.password
+
         });
         setStaffId(response.result.StaffId);
         setShow(true);
@@ -85,10 +85,10 @@ export default function StaffMaster() {
     return ` ${staffMaster.fullName}, ${staffMaster.address} ,${staffMaster.contactNo}, ${staffMaster.email}`
   };
   const editTemplate = (staffMaster) => {
-    return <i onClick={() => fetchStaffDetail(staffMaster.staffId)} className='fas fa-edit'></i>;
+    return <i onClick={() => fetchStaffDetail(staffMaster.staffId)} className='fas fa-edit  text-success'></i>;
   };
   const deleteTemplate = (staffMaster) => {
-    return <i onClick={() => deleteStaffMasters(staffMaster.staffId)} className='fas fa-trash'></i>;
+    return <i onClick={() => deleteStaffMasters(staffMaster.staffId)} className='fas fa-trash text-danger'></i>;
   };
   useEffect(() => {
     fetchStaffs();
@@ -100,26 +100,22 @@ export default function StaffMaster() {
       <div className="row" jstcache={0}>
         <div className="col-lg-12">
           <div className="card">
-            <div className="card-header">
-              <h4 className="card-title mb-0">Suppliers</h4>
-            </div>
+            <div className="card-header"><h4 className="card-title mb-0">Staff List</h4></div>
             <div className="card-body">
               <div className="row">
                 <div className="col-md-12 mb-2">
-                  <button type="button" id='openPopup' onClick={() => setShow(true)} className="btn btn-primary">Add Supplier</button>
+                  <button type="button" id='openPopup' onClick={() => setShow(true)} className="open-modal-btn">Add Staff</button>
                   <StaffPopup fetchStaffs={fetchStaffs} staffId={StaffId} setStaffId={setStaffId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} />
                 </div>
                 <div className="col-md-12 table-responsive">
                   <DataTable showGridlines size='small' loading={dataLoading} value={StaffMasters} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="staffId" header="#"></Column>
-                    <Column body={AddressTemplate} header="Address"></Column>
-                    <Column field="category" header="category"></Column>
-                    <Column field="qualification" header="qualification"></Column>
-                    <Column field="age" header="Age "></Column>
-                    <Column field="dj" header="DOJ"></Column>
+                    <Column body={AddressTemplate} header="Address" ></Column>
+                    <Column field="category" header="category" sortable></Column>
+                    <Column field="qualification" header="qualification" ></Column>
+                    <Column field="age" header="Age " sortable></Column>
+                    <Column field="dj" header="DOJ" ></Column>
                     <Column field="adharNo" header="AdharNo"></Column>
-                    <Column field="password" header="Password"></Column>
-
                     <Column body={editTemplate} className='text-center' style={{ width: "50px" }}></Column>
                     <Column body={deleteTemplate} className='text-center' style={{ width: "50px" }}></Column>
                   </DataTable>

@@ -183,8 +183,8 @@ export default function SupplierPopup(props) {
                   </div>
                 </div>
                 <div className="col-md-12 mb-2">
-                  <button id='btnSave' type='submit' disabled={!props.loading ? false : true} className='btn btn-primary btn-lg'>{!props.loading ? "Save" : "Please Wait"}</button>&nbsp;
-                  <button id='btnCancle' onClick={() => clearForm()} type='reset' className='btn btn-danger btn-lg'>Cancle</button>
+                  <button id='btnSave' type='submit' disabled={!props.loading ? false : true} className='btn-custom btn-save'>{!props.loading ? "Save" : "Please Wait"}</button>&nbsp;
+                  <button id='btnCancle' onClick={() => clearForm()} type='reset' className='btn-custom btn-cancel'>Cancle</button>
                 </div>
               </form>
             </div>

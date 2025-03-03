@@ -80,7 +80,7 @@ export default function InwordStock() {
             <div className="card-body">
               <div className="row">
                 <div className="col-md-12 mb-2">
-                  <button onClick={() => setShow(true)} className="btn btn-primary">Open Modal</button>
+                  <button onClick={() => setShow(true)} className="open-modal-btn">Open Modal</button>
                 </div>
                 <div className="col-md-12 table-responsive">
                   <DataTable value={inwordStocks} loading={dataLoading} size="small" showGridlines>

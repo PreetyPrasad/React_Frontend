@@ -3,20 +3,11 @@ import { getData } from "../API";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import PurchaseReturnpopup from './Popups/PurchaseReturnpopup';
-
 export default function PurchaseReturn() {
-
-
-
-  
-    const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false);
   const [purchaseReturns, setPurchaseReturns] = useState([]);
   const [loading, setLoading] = useState(false);
- 
   const [PurchaseReturnId, setPurchaseReturnId] = useState(0);
-
-
-
   const [initialValue, setInitialValue] = useState({
     purchaseReturnId: "",
     purchaseId: "",
@@ -26,7 +17,6 @@ export default function PurchaseReturn() {
     total: "",
     returnDate: "",
   });
-  /** 🔍 Fetching Purchase Returns */
   const fetchPurchaseReturns = async () => {
     setLoading(true);
     try {
@@ -69,7 +59,7 @@ export default function PurchaseReturn() {
       className="fas fa-edit cursor-pointer"
     ></i>
   );
-  /** 🗑️ Delete Purchase Return */
+ 
   const deletePurchaseReturn = async (id) => {
     if (window.confirm("Are you sure you want to delete this purchase return?")) {
       setLoading(true);
@@ -88,7 +78,7 @@ export default function PurchaseReturn() {
     }
   };
 
-  /** 📅 Format Date */
+
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
@@ -128,15 +118,9 @@ export default function PurchaseReturn() {
             <Column field="total" header="Total" sortable></Column>
             <Column field="returnDate" header="Return Date" body={(rowData) => formatDate(rowData.returnDate)}></Column>
             <Column body={editTemplate} className="text-center" style={{ width: "50px" }}></Column>
-            <Column
-              body={(rowData) => (
-                <i
-                  onClick={() => deletePurchaseReturn(rowData.purchaseReturnId)}
-                  className="fas fa-trash text-danger cursor-pointer"
+            <Column body={(rowData) => (<i onClick={() => deletePurchaseReturn(rowData.purchaseReturnId)}className="fas fa-trash text-danger "
                 ></i>
-              )}
-              style={{ textAlign: "center", width: "50px" }}
-            ></Column>
+              )}style={{ textAlign: "center", width: "50px" }}></Column>
           </DataTable>
         </div>
       </div>

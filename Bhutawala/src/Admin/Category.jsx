@@ -1,172 +1,149 @@
-import { useEffect, useState } from "react";
-import { categoriesSchema } from "../Schema";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { getData, postData } from "../API";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import FilterTable from "./filtertable";
-import { toast } from "react-toastify";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useFormik } from 'formik'
+import React, { useEffect, useState } from 'react'
+import { categoriesSchema } from '../Schema';
+import { getData, postData } from '../API';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
 export default function Category() {
-  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [categoryId, setCategoryId] = useState(0);
-  const [initialValues, setInitialValues] = useState({ Category: "" });
+  const [dataloading, setDataLoading] = useState(false);
+  const [category, setCategorys] = useState([]);
+  const [CategoryId, setCategoryId] = useState(0);
+  const [initialValue, setInitalValue] = useState({
+    YearName: ""
+  });
+  const { handleBlur, handleChange, handleSubmit, errors, values } = useFormik({
+    initialValues: initialValue,
+    validationSchema: categoriesSchema,
+    enableReinitialize: true,
+    onSubmit: async (response) => {
+      const requestData = {
+        "CategoryName": values.CategoryName,
+        "CategoryId": CategoryId
+      };
 
-  // Fetch Categories
-  const fetchCategories = async () => {
-    try {
-      const response = await getData("Category/List");
-      if (response.status.toLowerCase() === "ok") {
-        setCategories(response.result);
-      } else {
-        toast.error("Error fetching categories");
-      }
-    } catch (error) {
-      console.error("Fetch error:", error);
-      toast.error("API error");
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  // Delete Category
-  const deleteData = async (Id) => {
-    if (window.confirm("Are you sure you want to delete?")) {
       try {
-        const response = await getData(`Category/Remove/${Id}`);
-        if (response.status.toLowerCase() === "ok") {
-          toast.success("Category deleted successfully");
-          fetchCategories();
-        } else {
-          toast.error("Error deleting category");
+        setLoading(true);
+        const result = await postData(
+          (CategoryId == 0 ? "Category/Save" : "Category/Edit"),
+          requestData
+        );
+        console.log(result);
+        if (result.status.toUpperCase() === "OK") {
+          alert("Successfully Saved");
+          fetchCategorys();
         }
-      } catch (error) {
-        console.error("Delete error:", error);
-        toast.error("API error occurred");
+        else {
+          alert("Already Exists");
+        }
+      }
+      catch (error) {
+        console.error("Error  posting data in component:", error.message);
+      }
+      finally {
+        setLoading(false);
+        clearForm();
       }
     }
-  };
+  });
 
-  // Add or Edit Category
-  const postCategoryData = async (data) => {
-    setLoading(true);
-    const postRequest = { categoryName: data.Category, categoryId: categoryId };
-
+  const fetchCategorys = async () => {
     try {
-      const result = await postData(
-        categoryId === 0 ? "Category/Save" : "Category/Edit",
-        postRequest
-      );
-
-      if (result.status.toLowerCase() === "ok") {
-        toast.success(categoryId === 0 ? "Category added" : "Category updated");
-        cancelForm(); // Reset form
-        fetchCategories(); // Refresh categories
+      setDataLoading(true);
+      const response = await getData("Category/List");
+      if (response.status.toUpperCase() == "OK") {
+        setCategorys(response.result);
+        console.log(response.result);
       } else {
-        toast.error("Category already exists");
+        console.log("Something went wrong");
       }
     } catch (error) {
-      console.error("Error saving category:", error);
-      toast.error("API error occurred");
-    } finally {
-      setLoading(false);
+      console.error("Error fetching data in component:", error);
+    }
+    finally {
+      setDataLoading(false);
     }
   };
 
-  // Reset Form
-  const cancelForm = () => {
-    setCategoryId(0);
-    setInitialValues({ Category: "" });
-  };
-
-  // Fetch Category Details (For Edit)
   const fetchCategoryDetail = async (Id) => {
     try {
-      const response = await getData(`Category/Details/${Id}`);
-      if (response.status.toLowerCase() === "ok") {
+      const response = await getData("Category/Details/" + Id);
+      if (response.status == "OK") {
+        setInitalValue({
+          CategoryName: response.result.categoryName
+        })
         setCategoryId(response.result.categoryId);
-        setInitialValues({ Category: response.result.categoryName });
       } else {
-        toast.error("Error fetching category details");
+        console.log("Something went wrong");
       }
     } catch (error) {
-      console.error("Fetch detail error:", error);
+      console.error("Error fetching data in component:", error);
     }
+  }
+  const deleteTransactionYear = async (Id) => {
+    if (window.confirm("Are you sure to delete...?")) {
+      try {
+        setDataLoading(true);
+        const response = await getData("Category/Remove/" + Id);
+        if (response.status == "OK") {
+          setCategoryId(response.result)
+          console.log(response.result);
+          fetchCategorys();
+        } else {
+          console.log("Something went wrong");
+        }
+      } catch (error) {
+        console.error("Error fetching data in component:", error);
+      }
+      finally {
+        setDataLoading(false);
+      }
+    }
+  }
+  const clearForm = () => {
+    setInitalValue({ CategoryName: "" });
+    setCategoryId(0);
+  }
+  const deleteTemplate = (category) => {
+    return <i onClick={() => deleteTransactionYear(category.categoryId)} className='fas fa-trash text-danger'></i>;
   };
-
-  // Edit Button Template
-  const editTemplate = (category) => (
-    <span onClick={() => fetchCategoryDetail(category.categoryId)}>
-      <i style={{ color: "#0A003A" }} className="fas fa-edit"></i>
-    </span>
-  );
-
-  // Delete Button Template
-  const deleteTemplate = (category) => (
-    <span
-      onClick={() => deleteData(category.categoryId)}
-      style={{ cursor: "pointer" }}
-    >
-      <i style={{ color: "#0A003A" }} className="fas fa-trash"></i>
-    </span>
-  );
-
+  const editTemplate = (category) => {
+    return <i onClick={() => fetchTransactionYearDetail(category.categoryId)} className='fas fa-edit text-success '></i>;
+  };
+  useEffect(() => {
+    fetchCategorys();
+  }, []);
   return (
-    <div className="container">
-      <h3>Manage Categories</h3><Formik
-        enableReinitialize={true}
-        initialValues={initialValues}
-        validationSchema={categoriesSchema}
-        onSubmit={(values, { resetForm }) => {
-          postCategoryData(values);
-          resetForm(); // Reset form fields after submission
-          cancelForm(); // Reset categoryId and initialValues
-        }}
-      >
-        {({ errors, touched }) => (
-          <Form>
-            <div className="form-group mb-2">
-              <label htmlFor="Category">Category Name</label>
-              <Field
-                id="Category"
-                className={`form-control ${errors.Category && touched.Category ? "is-invalid" : ""}`}
-                name="Category"
-                type="text"
-                placeholder="Enter category name"
-              />
-              <ErrorMessage name="Category" component="div" className="invalid-feedback" />
+    <div className="container-fluid" jstcache={0}>
+      <div className="row" jstcache={0}>
+        <div className="col-lg-12">
+          <div className="card">
+            <div className="card-header"><h4 className="card-title mb-0">Category</h4></div>
+            <div className="card-body">
+              <form onSubmit={handleSubmit} className="row">
+                <div className="col-md-12 mb-2 ">
+                  <b>CategoryName</b><span className="text-danger">*{errors.CategoryName}</span>
+                  <input type="text" value={values.CategoryName} onChange={handleChange}
+                    onBlur={handleBlur} id='CategoryName' name='CategoryName' className="form-control " placeholder="CategoryName" />
+                </div>
+                <div className="col-md-12 mb-2 ">
+                  <button id='btnSave' type='submit' disabled={!loading ? false : true} className='open-modal-btn'>{!loading ? "Save" : "Please Wait"}</button>&nbsp;
+                  <button id='btnCancle' type='reset' className='btn-custom btn-cancel' onClick={clearForm}>Cancel</button>
+                </div>
+                <div className='col-md-12 tabl-responsive'>
+                  <DataTable value={category} loading={dataloading} paginator rows={5} rowsPerPageOptions={[5, 10, 25]}>
+                    <Column field="categoryId" header="categoryId"></Column>
+                    <Column field="categoryName" header="CategoryName" sortable ></Column>
+                    <Column body={editTemplate} className='text-center' style={{ width: '50px' }}></Column>
+                    <Column body={deleteTemplate} className='text-center' style={{ width: '50px' }}></Column>
+                  </DataTable>
+                </div>
+              </form>
             </div>
-            <button disabled={loading} className="btn btn-primary" type="submit">
-              {loading ? "Saving..." : "Submit"}
-            </button>
-            &nbsp;
-            <button type="reset" className="btn btn-danger" onClick={cancelForm}>
-              Cancel
-            </button>
-          </Form>
-        )}
-      </Formik>
-
-      <FilterTable />
-
-      <div className="table-responsive">
-        <DataTable
-          paginator
-          rows={5}
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          size="small"
-          value={categories}
-        >
-          <Column field="categoryId" sortable header="#" />
-          <Column field="categoryName" sortable header="Name" />
-          <Column style={{ width: "30px" }} body={deleteTemplate} header="Delete" />
-          <Column style={{ width: "30px" }} body={editTemplate} header="Edit" />
-        </DataTable>
+          </div>
+        </div>
       </div>
     </div>
-  );
+  )
 }

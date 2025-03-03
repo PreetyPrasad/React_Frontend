@@ -1,0 +1,30 @@
+/* Basic button styling */
+#openPopup {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  font-size: 16px; /* Font size */
+  font-weight: bold; /* Bold text */
+  padding: 12px 24px; /* Padding around the text */
+  border-radius: 8px; /* Rounded corners */
+  border: none; /* Remove border */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+/* Hover effect */
+#openPopup:hover {
+  background-color: #0056b3; /* Darker blue when hovered */
+  transform: translateY(-4px); /* Slightly raise the button */
+}
+
+/* Active (pressed) effect */
+#openPopup:active {
+  background-color: #004085; /* Even darker blue when clicked */
+  transform: translateY(2px); /* Slightly lower the button */
+}
+
+/* Focus effect */
+#openPopup:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Blue glow around button */
+}

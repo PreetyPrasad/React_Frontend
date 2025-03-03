@@ -30,7 +30,6 @@ export default function InvoicePopup({ show, handleClose, refreshInvoices }) {
       console.error("Error fetching dropdown data:", error);
     }
   };
-
   const initialValues = {
     transactionYearId: "",
     staffId: "",
@@ -44,7 +43,6 @@ export default function InvoicePopup({ show, handleClose, refreshInvoices }) {
     noticePeriod: "",
     gstin: "",
   };
-
   const validationSchema = Yup.object().shape({
     transactionYearId: Yup.string().required("Required"),
     staffId: Yup.string().required("Required"),

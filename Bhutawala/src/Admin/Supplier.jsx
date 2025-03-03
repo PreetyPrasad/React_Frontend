@@ -3,6 +3,8 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { getData } from '../API';
 import SupplierPopup from './Popups/SupplierPopup'
+
+
 export default function Supplier() {
   const [Suppliers, setSuppliers] = useState([]);
   const [show, setShow] = useState(false);
@@ -89,7 +91,7 @@ export default function Supplier() {
   };
 
   const AddressTemplate = (supplier) => {
-      return `${supplier.address} ${supplier.city} ${supplier.state} ${supplier.pinCode}`
+    return `${supplier.address} ${supplier.city} ${supplier.state} ${supplier.pinCode}`
   };
   const EmailTemplate = (supplier) => {
     return `${supplier.contactNo} ${supplier.email}`
@@ -98,11 +100,12 @@ export default function Supplier() {
     return `${supplier.banckBranch} ${supplier.bankName}${supplier.ifsc} ${supplier.accountNo}`
   };
   const editTemplate = (supplier) => {
-    return <i onClick={() => fetchSupplierDetail(supplier.supplierId)} className='fas fa-edit'></i>;
+    return <i onClick={() => fetchSupplierDetail(supplier.supplierId)} className='fas fa-edit  text-success'></i>;
   };
   const deleteTemplate = (supplier) => {
-    return <i onClick={() => deleteSuppliers(supplier.supplierId)} className='fas fa-trash'></i>;
+    return <i onClick={() => deleteSuppliers(supplier.supplierId)} className='fas fa-trash text-danger'></i>;
   };
+
   useEffect(() => {
     fetchSuppliers();
   }, []);
@@ -113,26 +116,23 @@ export default function Supplier() {
       <div className="row" jstcache={0}>
         <div className="col-lg-12">
           <div className="card">
-            <div className="card-header">
-              <h4 className="card-title mb-0">Suppliers</h4>
-            </div>
+            <div className="card-header"> <h4 className="card-title mb-0">Supplier List</h4> </div>
             <div className="card-body">
               <div className="row">
                 <div className="col-md-12 mb-2">
-                  <button type="button" id='openPopup' onClick={() => setShow(true)} className="btn btn-primary">Add Supplier</button>
+                  <button type="button" id='openPopup' onClick={() => setShow(true)} className="open-modal-btn">Add Supplier</button>
                   <SupplierPopup fetchSuppliers={fetchSuppliers} SupplierId={SupplierId} setSupplierId={setSupplierId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} />
                 </div>
                 <div className="col-md-12 table-responsive">
                   <DataTable showGridlines size='small' loading={dataLoading} value={Suppliers} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="supplierId" header="#"></Column>
-                    <Column field="businessName" header="BusinessName"></Column>
-                    <Column field="contactPerson" header="ContactPerson"></Column>
-                    <Column field="contactNo" header="ContactNo"></Column>
-                    <Column body={AddressTemplate} header="Address"></Column>
-                    <Column field="gstin" header="GSTIN "></Column>
-                    <Column field="pan" header="pan"></Column>
-                    <Column body={BankTemplate} header="Bank "></Column>
-                    <Column body={EmailTemplate} header="email"></Column>
+                    <Column field="businessName" header="BusinessName" sortable></Column>
+                    <Column field="contactPerson" header="ContactPerson" sortable></Column>
+                    <Column body={AddressTemplate} header="Address" sortable></Column>
+                    <Column field="gstin" header="GSTIN " sortable></Column>
+                    <Column field="pan" header="pan" sortable></Column>
+                    <Column body={BankTemplate} header="Bank " sortable></Column>
+                    <Column body={EmailTemplate} header="email" sortable></Column>
                     <Column body={editTemplate} className='text-center' style={{ width: "50px" }}></Column>
                     <Column body={deleteTemplate} className='text-center' style={{ width: "50px" }}></Column>
                   </DataTable>

@@ -2,6 +2,7 @@ import { useFormik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { MaterialSchema } from '../../Schema';
 import { getData, postData } from '../../API';
+import "../../Admin/Style.css";
 export default function MaterialPopup(props) {
   const [categories, setCategories] = useState([]);
 
@@ -138,7 +139,6 @@ export default function MaterialPopup(props) {
                       <b>Net Qty</b> <span className='text-danger'>*{errors.Net_Qty}</span>
                       <input type="text" value={values.Net_Qty} onChange={handleChange} onBlur={handleBlur} id='Net_Qty' name='Net_Qty' className='form-control' placeholder='Net_Qty' />
                     </div>
-
                   </div>
                 </div>
                 <div className='col-md-6 mb-2'>
@@ -162,8 +162,8 @@ export default function MaterialPopup(props) {
                   </div>
                 </div>
                 <div className="col-md-12 mb-2">
-                  <button id='btnSave' type='submit' disabled={!props.loading ? false : true} className='btn btn-primary btn-lg'>{!props.loading ? "Save" : "Please Wait"}</button>&nbsp;
-                  <button id='btnCancle' onClick={() => clearForm()} type='reset' className='btn btn-danger btn-lg'>Cancle</button>
+                  <button id='btnSave' type='submit' disabled={!props.loading ? false : true} className="btn-custom btn-save">{!props.loading ? "Save" : "Please Wait"}</button>&nbsp;
+                  <button id='btnCancle' onClick={() => clearForm()} type='reset' className="btn-custom btn-cancel">Cancle</button>
                 </div>
               </form>
             </div>

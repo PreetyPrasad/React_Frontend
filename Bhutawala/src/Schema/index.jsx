@@ -212,14 +212,14 @@ export const PurchaseReturnSchema = Yup.object().shape({
 
 export const InvoiceDetailSchema = Yup.object().shape({
   // InvoiceId: Yup.number()
-    // .required("Invoice is required")
-    // .positive("Invalid Invoice ID")
-    // .integer("Invalid Invoice ID"),
+  // .required("Invoice is required")
+  // .positive("Invalid Invoice ID")
+  // .integer("Invalid Invoice ID"),
 
   // MaterialId: Yup.number()
-    // .required("Material is required")
-    // .positive("Invalid Material ID")
-    // .integer("Invalid Material ID"),
+  // .required("Material is required")
+  // .positive("Invalid Material ID")
+  // .integer("Invalid Material ID"),
 
   Rate: Yup.number()
     .required("Rate is required")
@@ -242,26 +242,16 @@ export const InvoiceDetailSchema = Yup.object().shape({
     .min(0, "Total must be non-negative"),
 });
 
-export const purchasePaymentSchema = Yup.object().shape({
-  PurchaseId: Yup.number()
-    .nullable()
-    .min(1, "Please select a valid Purchase")
-    .required("Purchase is required"),
 
+export const purchasePaymentSchema = Yup.object({
+  PurchaseId: Yup.string().required('Purchase ID is required'),
   Amount: Yup.number()
-    .min(0.01, "Amount must be greater than zero")
+    .required('Amount is required')
+    // .min(1, "Amount must be greater than 0") // Negative aur 0 values reject hogi
+    // .max(Yup.ref(values.Amount > props.remain), "Amount cannot exceed remaining balance")
     .required("Amount is required"),
 
-  PaymentMode: Yup.string()
-    .max(50, "Payment Mode cannot exceed 50 characters")
-    .required("Payment Mode is required"),
+  PaymentMode: Yup.string().required('Payment Mode is required'),
 
-  RefNo: Yup.string()
-    .max(100, "Reference Number cannot exceed 100 characters")
-    .nullable(),
-
-  PaymentDate: Yup.date()
-    .required("Payment date is required")
-    .max(new Date(), "Payment date cannot be in the future"),
+  PaymentDate: Yup.date().required('Payment Date is required'),
 });
-

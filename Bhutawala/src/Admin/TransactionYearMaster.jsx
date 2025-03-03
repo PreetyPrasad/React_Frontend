@@ -5,7 +5,6 @@ import { getData, postData } from '../API';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
-
 export default function TransactionYearMaster() {
   const [loading, setLoading] = useState(false);
   const [dataloading, setDataLoading] = useState(false);
@@ -33,9 +32,7 @@ export default function TransactionYearMaster() {
         console.log(result);
         if (result.status.toUpperCase() === "OK") {
           alert("Successfully Saved");
-
           fetchTransactionYears();
-
         }
         else {
           alert("Already Exists");
@@ -47,7 +44,6 @@ export default function TransactionYearMaster() {
       finally {
         setLoading(false);
         clearForm();
-
       }
     }
   });
@@ -70,10 +66,6 @@ export default function TransactionYearMaster() {
     }
   };
 
-  const clearForm = () => {
-    setInitalValue({ YearName: "" });
-    setTransactionYearId(0);
-  }
   const fetchTransactionYearDetail = async (Id) => {
     try {
       const response = await getData("TransactionYear/Details/" + Id);
@@ -109,29 +101,25 @@ export default function TransactionYearMaster() {
       }
     }
   }
+  const clearForm = () => {
+    setInitalValue({ YearName: "" });
+    setTransactionYearId(0);
+  }
   const deleteTemplate = (transactionYear) => {
-    return <i onClick={() => deleteTransactionYear
-      (transactionYear.transactionYearId)} className='fas 
-fa-trash'></i>;
+    return <i onClick={() => deleteTransactionYear(transactionYear.transactionYearId)} className='fas fa-trash text-danger'></i>;
   };
   const editTemplate = (transactionYear) => {
-    return <i onClick={() => fetchTransactionYearDetail
-      (transactionYear.transactionYearId)} className='fas 
-fa-edit'></i>;
+    return <i onClick={() => fetchTransactionYearDetail(transactionYear.transactionYearId)} className='fas fa-edit text-success '></i>;
   };
-
   useEffect(() => {
     fetchTransactionYears();
   }, []);
-
   return (
     <div className="container-fluid" jstcache={0}>
       <div className="row" jstcache={0}>
         <div className="col-lg-12">
           <div className="card">
-            <div className="card-header">
-              <h4 className="card-title mb-0">Material</h4>
-            </div>
+            <div className="card-header"><h4 className="card-title mb-0">Transaction</h4></div>
             <div className="card-body">
               <form onSubmit={handleSubmit} className="row">
                 <div className="col-md-12 mb-2 ">
@@ -140,14 +128,13 @@ fa-edit'></i>;
                     onBlur={handleBlur} id='YearName' name='YearName' className="form-control " placeholder="YearName" />
                 </div>
                 <div className="col-md-12 mb-2 ">
-                  <button id='btnSave' type='submit' disabled={!loading ? false : true} className='btn btn-primary'>{!loading ? "Save" : "Please Wait"}</button>&nbsp;
-                  <button id='btnCancle' type='reset' className='btn 
-                  btn-danger' onClick={clearForm}>Cancel</button>
+                  <button id='btnSave' type='submit' disabled={!loading ? false : true} className='open-modal-btn'>{!loading ? "Save" : "Please Wait"}</button>&nbsp;
+                  <button id='btnCancle' type='reset' className='btn-custom btn-cancel' onClick={clearForm}>Cancel</button>
                 </div>
                 <div className='col-md-12 tabl-responsive'>
-                  <DataTable value={transactionYears} loading={dataloading} tableStyle={{ minWidth: '50rem' }}>
-                    <Column field="transactionYearId" header="Transaction Year Id"></Column>
-                    <Column field="yearName" header="Year Name" ></Column>
+                  <DataTable value={transactionYears} loading={dataloading} paginator rows={5} rowsPerPageOptions={[5, 10, 25]}>
+                    <Column field="transactionYearId" header="TransactionId"></Column>
+                    <Column field="yearName" header="Year Name" sortable ></Column>
                     <Column body={editTemplate} className='text-center' style={{ width: '50px' }}></Column>
                     <Column body={deleteTemplate} className='text-center' style={{ width: '50px' }}></Column>
                   </DataTable>

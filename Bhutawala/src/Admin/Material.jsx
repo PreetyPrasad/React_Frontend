@@ -3,6 +3,8 @@ import MaterialPopup from './Popups/MaterialsPopup';
 import { getData, postData } from '../API';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import "../Admin/Style.css";
+
 
 export default function Material() {
   const [show, setShow] = useState(false);
@@ -10,7 +12,6 @@ export default function Material() {
   const [dataLoading, setDataLoading] = useState(false);
   const [Materials, setMaterials] = useState([]);
   const [MaterialId, setMaterialId] = useState(0);
-
   const [initialValue, setInitialValue] = useState({
     CategoryId: "",
     MaterialName: "",
@@ -82,45 +83,39 @@ export default function Material() {
   const unitTemplate = (material) => {
     return `${material.qty} ${material.unit}`
   };
-
   const editTemplate = (material) => {
     return <i onClick={() => fetchMaterialDetail(material.materialId)} className='fas fa-edit'></i>;
   };
-
   const deleteTemplate = (material) => {
-    return <i onClick={() => deleteMaterial(material.materialId)} className='fas fa-trash'></i>;
+    return <i onClick={() => deleteMaterial(material.materialId)} className='fas fa-trash'  ></i>;
   };
-
   useEffect(() => {
     fetchMaterials();
   }, []);
-
-
   return (
     <div className="container-fluid" jstcache={0}>
       <div className="row" jstcache={0}>
         <div className="col-lg-12">
           <div className="card">
-            <div className="card-header">
-              <h4 className="card-title mb-0">Material</h4>
-            </div>
+            <div className="card-header"><h4 className="card-title mb-0">Material</h4></div>
             <div className="card-body">
               <div className="row">
                 <div className="col-md-12 mb-2">
-                  <button type="button" id='openPopup' onClick={() => setShow(true)} className="btn btn-primary">Open modal</button>
+                  <button type="button"  id="openPopup" onClick={() => setShow(true)} className='open-modal-btn'> Open modal</button>
+                  {/* <button type="button" id='openPopup' onClick={() => setShow(true)} className="btn btn-primary">Open modal</button> */}
                   <MaterialPopup fetchMaterials={fetchMaterials} MaterialId={MaterialId} setMaterialId={setMaterialId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} />
                 </div>
-                <div className="col-md-12 table-responsive">
-                  <DataTable showGridlines size='small' loading={dataLoading} value={Materials} tableStyle={{ minWidth: '50rem' }}>
-                    <Column style={{ width: "100px" }} field="materialId" header="#"></Column>
-                    <Column field="category.categoryName" header="Categories"></Column>
-                    <Column field="brand" header="Brand"></Column>
-                    <Column field="materialName" header="Categories"></Column>
-                    <Column body={unitTemplate} header="Unit"></Column>
-                    <Column field="net_Qty" header="net_Qty"></Column>
-                    <Column field="gst" header="GST"></Column>
-                    <Column field="gsT_Type" header="GST Type"></Column>
-                    <Column body={editTemplate} className='text-center' style={{ width: "50px" }}></Column>
+                <div className="col-md-12 table-responsive" >
+                  <DataTable showGridlines size='small' loading={dataLoading} value={Materials} paginator rows={5} rowsPerPageOptions={[5, 10, 25]} >
+                    <Column style={{ width: "100px" }} field="materialId" header="#" sortable></Column>
+                    <Column field="category.categoryName" header="Categories" sortable></Column>
+                    <Column field="brand" header="Brand" sortable></Column>
+                    <Column field="materialName" header="Categories" sortable></Column>
+                    <Column body={unitTemplate} header="Unit" sortable></Column>
+                    <Column field="net_Qty" header="net_Qty" sortable></Column>
+                    <Column field="gst" header="GST" sortable></Column>
+                    <Column field="gsT_Type" header="GST Type" sortable></Column>
+                    <Column body={editTemplate} className='text-center' style={{ width: "50px" }} ></Column>
                     <Column body={deleteTemplate} className='text-center' style={{ width: "50px" }}></Column>
                   </DataTable>
                 </div>
@@ -130,5 +125,6 @@ export default function Material() {
         </div>
       </div>
     </div>
+    
   )
 }

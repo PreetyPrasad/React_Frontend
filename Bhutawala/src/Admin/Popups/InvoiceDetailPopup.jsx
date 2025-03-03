@@ -166,11 +166,11 @@ export default function InvoiceDetailPopup(props) {
 
                 
                 <div className="col-md-12 mb-2">
-                  <button type='submit' disabled={props.loading} className='btn btn-primary btn-lg'>
+                  <button type='submit' disabled={props.loading} className='btn-custom btn-save'>
                     {props.loading ? "Please Wait" : "Save"}
                   </button>
                   &nbsp;
-                  <button onClick={clearForm} type='reset' className='btn btn-danger btn-lg'>Cancel</button>
+                  <button onClick={clearForm} type='reset' className='btn-custom btn-cancel'>Cancel</button>
                 </div>
               </form>
             </div>

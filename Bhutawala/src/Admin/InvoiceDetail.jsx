@@ -73,7 +73,7 @@ export default function InvoiceDetail() {
         <div className="card-body">
           <div className="row">
             <div className="col-md-12 mb-2">
-              <button type="button" id='openPopup' onClick={() => setShow(true)} className="btn btn-primary">Open modal</button>
+              <button type="button" id='openPopup' onClick={() => setShow(true)} className="open-modal-btn">Open modal</button>
               <InvoiceDetailPopup fetchInvoiceDetails={fetchInvoiceDetails} InvoiceDetailId={InvoiceDetailId} setInvoiceDetailId={setInvoiceDetailId} loading={dataLoading} setLoading={setDataLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} />
             </div>
             <DataTable showGridlines size='small' loading={dataLoading} value={invoiceDetails} tableStyle={{ minWidth: '50rem' }}>
@@ -85,8 +85,8 @@ export default function InvoiceDetail() {
               <Column field="gstAmount" header="GST Amount"></Column>
               <Column field="unit" header="Unit"></Column>
               <Column field="total" header="Total"></Column>
-              <Column body={(rowData) => <i className='fas fa-edit' onClick={() => fetchInvoiceDetailDetail(rowData.invoiceDetailId)}></i>} />
-              <Column body={(rowData) => <i className='fas fa-trash' onClick={() => deleteInvoiceDetail(rowData.invoiceDetailId)}></i>} />
+              <Column body={(rowData) => <i className='fas fa-edit text-success' onClick={() => fetchInvoiceDetailDetail(rowData.invoiceDetailId)}></i>} />
+              <Column body={(rowData) => <i className='fas fa-trash text-danger' onClick={() => deleteInvoiceDetail(rowData.invoiceDetailId)}></i>} />
             </DataTable>
           </div>
         </div>

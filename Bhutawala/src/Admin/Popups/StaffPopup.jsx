@@ -2,7 +2,7 @@
 import { useFormik } from 'formik';
 import { StaffMasterSchema } from '../../Schema';
 import { getData, postData } from '../../API';
-import { Password } from 'primereact/password';
+
 
 export default function StaffPopup(props) {
 
@@ -20,7 +20,7 @@ export default function StaffPopup(props) {
         Age: values.Age,
         Dj: values.Dj,
         Email: values.Email,
-        Password: values.Password,
+      
         StaffId: props.StaffId
       };
 
@@ -65,7 +65,7 @@ export default function StaffPopup(props) {
       Age: '',
       Dj: '',
       Email: '',
-      Password: '',
+     
     });
     props.setShow(false);
     props.setStaffId(0);
@@ -119,16 +119,11 @@ export default function StaffPopup(props) {
                       <b>Email</b> <span className='text-danger'>*{errors.Email}</span>
                       <input type="email" value={values.Email} onChange={handleChange} onBlur={handleBlur} id='Email' name='Email' className='form-control' placeholder='Email' />
                     </div>
-                    <div className="col-md-4 mb-2">
-                      <b>Password</b> <span className='text-danger'>*{errors.Password}</span>
-                      <input type="Password" value={values.Password} onChange={handleChange} onBlur={handleBlur}
-                        id='Password' name='Password' className='form-control' placeholder='Password' />
-                    </div>
                   </div>
                 </div>
                 <div className="col-md-12 mb-2">
-                  <button id='btnSave' type='submit' disabled={!props.loading ? false : true} className='btn btn-primary btn-lg'>{!props.loading ? "Save" : "Please Wait"}</button>&nbsp;
-                  <button id='btnCancle' onClick={() => clearForm()} type='reset' className='btn btn-danger btn-lg'>Cancle</button>
+                  <button id='btnSave' type='submit' disabled={!props.loading ? false : true} className='btn-custom btn-save'>{!props.loading ? "Save" : "Please Wait"}</button>&nbsp;
+                  <button id='btnCancle' onClick={() => clearForm()} type='reset' className='btn-custom btn-cancel'>Cancle</button>
                 </div>
               </form>
             </div>
