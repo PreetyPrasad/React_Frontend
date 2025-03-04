@@ -15,8 +15,7 @@ import InwordStock from "./Admin/InwordStock";
 import PurchaseReturn from "./Admin/PurchaseReturn";
 import InvoiceDetail from "./Admin/InvoiceDetail";
 import PurchasePayment from "./Admin/PurchasePayment";
-
-
+import 'primeicons/primeicons.css';
 function App() {
   return (
     <BrowserRouter>

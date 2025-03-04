@@ -58,8 +58,7 @@ export default function PurchasePayment() {
           PaymentMode: response.result.paymentMode,
           RefNo: response.result.refNo,
           PaymentDate: response.result.paymentDate,
-          total: response.result.total,
-          paid: response.result.paid,
+
         });
         setPaymentId(response.result.paymentId);
         setShow(true);
@@ -70,12 +69,31 @@ export default function PurchasePayment() {
   };
   const openPopupButton = (rowData) => {
     return (
-      <Button className="Payment" onClick={() => {
-        if (rowData.remain <= 0) { alert("Full payment is already done! No more payments allowed."); return; } fetchPurchasePaymentDetail(rowData.paymentId); setInitialValue({ PurchaseId: rowData.purchaseId, Amount: rowData.remain }); setShow(true);
-      }} disabled={rowData.remain <= 0}>₹
+      <Button
+        className="Payment"
+        onClick={async () => {
+          if (rowData.remain <= 0) {
+            alert("Full payment is already done! No more payments allowed.");
+            return;
+          }
+
+          // Fetch details first, then update values & open popup
+          await fetchPurchasePaymentDetail(rowData.paymentId);
+
+          setInitialValue({
+            PurchaseId: rowData.purchaseId,
+            Amount: rowData.remain
+          });
+
+          setShow(true); // Open popup only after setting values
+        }}
+        disabled={rowData.remain <= 0}
+      >
+        ₹
       </Button>
     );
   };
+
 
   useEffect(() => {
     fetchPurchasePayments();

@@ -174,21 +174,27 @@ export const InvoiceValidationSchema = Yup.object({
 
 // Yup validation schema
 export const InwordStockSchema = Yup.object({
-  MaterialId: Yup.number().nullable().notRequired(),
-  PurchaseId: Yup.number().nullable().notRequired(),
+  MaterialId: Yup.number().nullable().required("Material is required."),
+  PurchaseId: Yup.number().nullable().required("Purchase is required."),
   Qty: Yup.number()
-    .min(0.01, "Quantity must be greater than zero.")
-    .required("Quantity is required."),
+    .required("Quantity is required.")
+    .positive("Quantity must be greater than zero.")
+    .min(0.01, "Quantity must be greater than zero."),
   Unit: Yup.string()
-    .max(50, "Unit cannot exceed 50 characters.")
-    .required("Unit is required."),
+    .required("Unit is required.")
+    .max(50, "Unit cannot exceed 50 characters."),
   Cost: Yup.number()
-    .min(0.01, "Cost must be greater than zero.")
-    .required("Cost is required."),
-  RecivedDate: Yup.date().required("Received Date is required."),
-  Note: Yup.string().max(200, "Note cannot exceed 200 characters."),
+    .required("Cost is required.")
+    .positive("Cost must be greater than zero.")
+    .min(0.01, "Cost must be greater than zero."),
+  DateTime: Yup.date().required("Received Date is required."),
+  Note: Yup.string()
+    .max(200, "Note cannot exceed 200 characters.")
+    .nullable(),
   StaffId: Yup.number().required("Staff ID is required."),
 });
+
+
 
 export const PurchaseReturnSchema = Yup.object().shape({
   PurchaseId: Yup.number().nullable(), // Can be null

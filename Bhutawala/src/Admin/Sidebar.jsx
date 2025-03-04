@@ -1,3 +1,5 @@
+
+import { Link } from "react-router-dom";
 export default function Sidebar(props) {
   return (
     <div className="app-menu navbar-menu">
@@ -1741,38 +1743,12 @@ export default function Sidebar(props) {
                 aria-controls="sidebarLanding"
               >
                 <i className="ri-rocket-line" />{" "}
-                <span data-key="t-landing">Landing</span>
+                <span data-key="t-landing">Payments</span>
               </a>
               <div className="collapse menu-dropdown" id="sidebarLanding">
                 <ul className="nav nav-sm flex-column">
                   <li className="nav-item">
-                    <a
-                      href="landing.html"
-                      className="nav-link"
-                      data-key="t-one-page"
-                    >
-                      {" "}
-                      One Page{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="nft-landing.html"
-                      className="nav-link"
-                      data-key="t-nft-landing"
-                    >
-                      {" "}
-                      NFT Landing{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="job-landing.html"
-                      className="nav-link"
-                      data-key="t-job"
-                    >
-                      Job
-                    </a>
+                    <Link to="/PurchaseMaster" className="nav-link"><span data-key="t-landing">Payment</span></Link>
                   </li>
                 </ul>
               </div>
