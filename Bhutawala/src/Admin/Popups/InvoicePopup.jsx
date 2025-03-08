@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getData, postData } from "../../API"; // Ensure API utility is correctly set
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { getData, postData } from "../../API";
+import { InvoiceSchema } from '../../Schema';
 import * as Yup from "yup";
 import { Modal, Button } from "react-bootstrap";
-
 export default function InvoicePopup({ show, handleClose, refreshInvoices }) {
   const [loading, setLoading] = useState(false);
   const [staffList, setStaffList] = useState([]);
   const [yearList, setYearList] = useState([]);
-
-  // Fetch dropdown data when modal opens
   useEffect(() => {
     if (show) {
       fetchDropdownData();
@@ -30,33 +27,24 @@ export default function InvoicePopup({ show, handleClose, refreshInvoices }) {
       console.error("Error fetching dropdown data:", error);
     }
   };
-  const initialValues = {
-    transactionYearId: "",
-    staffId: "",
-    customerName: "",
-    contactNo: "",
-    totalGross: "",
-    gst: "",
-    gst_TYPE: "",
-    total: "",
-    invoiceDate: "",
-    noticePeriod: "",
-    gstin: "",
-  };
-  const validationSchema = Yup.object().shape({
-    transactionYearId: Yup.string().required("Required"),
-    staffId: Yup.string().required("Required"),
-    customerName: Yup.string().required("Required"),
-    contactNo: Yup.string()
-      .required("Required")
-      .matches(/^\d{10}$/, "Must be 10 digits"),
-    totalGross: Yup.number().required("Required"),
-    gst: Yup.number().required("Required"),
-    gst_TYPE: Yup.string().required("Required"),
-    total: Yup.number().required("Required"),
-    invoiceDate: Yup.date().required("Required"),
-    gstin: Yup.string().required("Required"),
-  });
+  // const { handleSubmit, handleChange, handleBlur, errors, values, setFieldValue } = useFormik({
+    // enableReinitialize: true,
+    // initialValues: props.initialValue,
+    // validationSchema: InvoiceSchema,
+    // onSubmit: async (values) => {
+      // const requestData = {
+    // transactionYearId: "",
+    // staffId: "",
+    // customerName: "",
+    // contactNo: "",
+    // totalGross: "",
+    // gst: "",
+    // gst_TYPE: "",
+    // total: "",
+    // invoiceDate: "",
+    // noticePeriod: "",
+    // gstin: "",
+  // });
 
   const handleSubmit = async (values, { resetForm }) => {
     setLoading(true);

@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { getData, postData } from '../API';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import 'primeicons/primeicons.css';
+import { useNavigate } from "react-router-dom";
 import PurchaseMasterpoppup from './Popups/PurchaseMasterpoppup';
+
 export default function PurchaseMaster() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
+  const navigate = useNavigate();
   const [PurchaseMasters, setPurchaseMasters] = useState([]);
   const [PurchaseId, setPurchaseId] = useState(0);
   const [initialValue, setInitialValue] = useState({
@@ -50,11 +54,9 @@ export default function PurchaseMaster() {
     }
   };
 
-
   const deletePurchaseMaster = async (Id) => {
     if (window.confirm("Are you sure to delete...?")) {
       try {
-        setDataLoading(true);
         const response = await getData("PurchaseMaster/Remove/" + Id);
         if (response.status == "OK") {
           fetchPurchaseMasters();
@@ -82,7 +84,6 @@ export default function PurchaseMaster() {
           BillNo: response.result.billNo,
           NoticePeriod: response.result.noticePeriod,
           Note: response.result.note
-
         });
         setPurchaseId(response.result.purchaseId);
         setShow(true);
@@ -103,13 +104,23 @@ export default function PurchaseMaster() {
     fetchPurchaseMasters();
   }, []);
   const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    if (isNaN(date)) return dateString;
+    if (!dateString) return "-"; const date = new Date(dateString); if (isNaN(date)) return dateString;
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
+  };
+  const handleDetails = (rowData) => {
+    alert(`Showing details for: ${rowData.purchaseId}`);
+  };
+  const viewTemplate = (purchaseMaster) => {
+    return (
+      <i
+        className="pi pi-list"
+        style={{ cursor: "pointer", fontSize: "1.2rem" }}
+        onClick={() => navigate(`/Purchase/Details/${purchaseMaster.purchaseId}`)} // Ensure correct URL
+      ></i>
+    );
   };
   return (
     <div className="container-fluid" jstcache={0}>
@@ -125,14 +136,14 @@ export default function PurchaseMaster() {
                 </div>
                 <div className="col-md-12 table-responsive">
                   <DataTable showGridlines size='small' loading={dataLoading} value={PurchaseMasters} tableStyle={{ minWidth: '50rem' }}>
-                    <Column style={{ width: "100px" }} field="purchaseId" header="#"></Column>
+                    <Column header="" body={viewTemplate} className="text-center" style={{ width: "50px" }} />
                     <Column field="supplierName" header="Supplier"></Column>
-                    <Column field="billNo" header="billNo" sortable></Column>
+                    <Column field="billNo" header="Bill No." sortable></Column>
                     <Column field="transactionYearName" header="Transaction Year"></Column>
-                    <Column field="grossTotal" header="grossTotal"></Column>
-                    <Column field="gst" header="GST"></ Column>
+                    <Column field="grossTotal" header="grossTotal" body={(data) => `₹ ${data.grossTotal.toLocaleString('en-IN')}`}></Column>
+                    <Column field="GST Amount" header="GST" body={(data) => `₹ ${data.grossTotal.toLocaleString('en-IN')}`}></ Column>
                     <Column field="gsT_Type" header="GSTType"></Column>
-                    <Column field="total" header="Total" body={(rowData) => { const totalAmount = (rowData.grossTotal || 0) + (rowData.gst || 0); return (<><i className="pi pi-money-bill" /> ₹{totalAmount.toLocaleString("en-IN")}</>); }} />
+                    <Column field="total" header="Total" body={(rowData) => { const totalAmount = (rowData.grossTotal || 0) + (rowData.gst || 0); return (<> ₹{totalAmount.toLocaleString("en-IN")}</>); }} />
                     <Column field="purchaseDate" header="purchaseDate" body={(rowData) => formatDate(rowData.purchaseDate)}></Column>
                     <Column field="noticePeriod" header="Notice Period" body={(rowData) => formatDate(rowData.noticePeriod)} />
                     <Column body={editTemplate} className='text-center' style={{ width: "50px" }}></Column>

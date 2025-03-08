@@ -47,7 +47,7 @@ export default function Supplier() {
   const deleteSuppliers = async (Id) => {
     if (window.confirm("Are you sure to delete...?")) {
       try {
-        setDataLoading(true);
+       
         const response = await getData("Supplier/Remove/" + Id);
         if (response.status.toUpperCase() == "OK") {
           fetchSuppliers();

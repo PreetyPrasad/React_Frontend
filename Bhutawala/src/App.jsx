@@ -16,6 +16,8 @@ import PurchaseReturn from "./Admin/PurchaseReturn";
 import InvoiceDetail from "./Admin/InvoiceDetail";
 import PurchasePayment from "./Admin/PurchasePayment";
 import 'primeicons/primeicons.css';
+import PurchaseDetails from "./Admin/Details/PurchaseDetails";
+import DebitNote from "./Admin/DebitNote";
 function App() {
   return (
     <BrowserRouter>
@@ -31,9 +33,8 @@ function App() {
         <Route path="/PurchaseReturn" element={<Demo Component={<PurchaseReturn />} />} />
         <Route path="/InvoiceDetail" element={<Demo Component={<InvoiceDetail />} />} />
         <Route path="/PurchasePayment" element={<Demo Component={<PurchasePayment />} />} />
-        <Route path="/" element={<Demo Component={<CreditNote />} />} />
-      
-
+        <Route path="/" element={<Demo Component={<DebitNote />} />} />
+        <Route path="/Purchase/Details/:id" element={<Demo Component={<PurchaseDetails />} />} />
       </Routes>
     </BrowserRouter>
   );

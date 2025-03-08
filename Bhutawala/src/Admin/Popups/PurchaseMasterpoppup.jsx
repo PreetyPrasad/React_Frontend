@@ -76,8 +76,6 @@ export default function PurchaseMasterpoppup(props) {
   const setContentValues = (fieldName, Value) => {
     setFieldValue(fieldName, Value);
   }
-
-
   const clearForm = () => {
     props.setInitialValue({
       SupplierId: "",
@@ -169,8 +167,8 @@ export default function PurchaseMasterpoppup(props) {
                       </select>
                     </div>
                     <div className="col-md-4 mb-2">
-                      <b>GST</b> <span className='text-danger'>*{errors.GST}</span>
-                      <input type="number" value={values.GST} onChange={(e) => setContentsValues("GST", e.target.value)} onBlur={handleBlur} id='GST' name='GST' className='form-control' placeholder='GST' />
+                      <b>GST Amount</b> <span className='text-danger'>*{errors.GST}</span>
+                      <input type="number" value={values.GST} onChange={(e) => setContentsValues("GST", e.target.value)} onBlur={handleBlur} id='GST' name='GST' className='form-control' placeholder='GST Amount' />
                     </div>
                     <div className="col-md-4 mb-2">
                       <b>GrossTotal</b> <span className='text-danger'>*{errors.GrossTotal}</span>
