@@ -71,7 +71,6 @@ export default function PurchaseDetails() {
     }
 
   };
-
   useEffect(() => {
     if (id) {
       console.log(" Fetching purchase details for ID:", id);
@@ -92,12 +91,13 @@ export default function PurchaseDetails() {
       fetchInwordDetails(purchaseDetail.purchaseId);
     }
   }, [purchaseDetail]);
+
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
     return isNaN(date) ? dateString : date.toLocaleDateString("en-GB");
   };
-
+  
   if (loading) return <p className="text-center">Loading...</p>;
   if (!purchaseDetail) return <p className="text-center">Purchase details not found.</p>;
   const grossTotal = purchaseDetail.grossTotal;
