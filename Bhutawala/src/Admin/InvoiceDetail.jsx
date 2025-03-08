@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getData } from '../API';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import InvoiceDetailPopup from './Popups/invoiceDetailPopup';
+import InvoiceDetailPopup from './Popups/InvoiceDetailPopup';
 
 export default function InvoiceDetail() {
   const [show, setShow] = useState(false);
