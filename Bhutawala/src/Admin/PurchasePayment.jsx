@@ -5,25 +5,22 @@ import { Column } from "primereact/column";
 import PaymentPopup from "./Popups/PaymentPopup";
 import PurchaseDetails from "./Details/PurchaseDetails";
 
-export default function PurchasePayment({ purchaseId, fetchPaymentDetails }) {
+export default function PurchasePayment({ purchaseId, fetchPaymentDetails, remainingAmount }) {
   const [show, setShow] = useState(false);
   const [purchasePayments, setPurchasePayments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [PaymentId, setPaymentId] = useState(0);
   const [error, setError] = useState(null);
-
   const [initialValue, setInitialValue] = useState({
     PurchaseId: purchaseId,
     Amount: "",
     PaymentMode: "",
     RefNo: "",
   });
-
   const fetchPurchasePayments = async () => {
     if (!purchaseId) return;
     setLoading(true);
     setError(null);
-
     try {
       const paymentResponse = await getData(`PurchasePayment/PurchasePayments/${purchaseId}`);
       if (paymentResponse.status.toUpperCase() === "OK") {
@@ -38,24 +35,18 @@ export default function PurchasePayment({ purchaseId, fetchPaymentDetails }) {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchPurchasePayments();
   }, [purchaseId]);
-
   const openPopup = () => {
     setShow(true);
   };
-
-
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
     if (isNaN(date)) return dateString;
     return `${String(date.getDate()).padStart(2, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFullYear()}`;
   };
-
-
   const deletePurchasePayment = async (purchaseId) => {
     if (window.confirm("Are you sure to delete...?")) {
       try {
@@ -74,8 +65,6 @@ export default function PurchasePayment({ purchaseId, fetchPaymentDetails }) {
       }
     }
   };
-
-
   const deleteTemplate = (payment) => {
     return (
       <i onClick={() => deletePurchasePayment(payment.purchaseId)} className="fas fa-trash text-danger"></i>
@@ -84,10 +73,10 @@ export default function PurchasePayment({ purchaseId, fetchPaymentDetails }) {
 
   return (
     <div className="container-fluid">
-      <button className="btn btn-primary" onClick={openPopup}>Add Payment</button>
+      <button onClick={openPopup} className="open-modal-btn">Add Payment</button>
 
       <div className="col-md-12 mb-2">
-        <PaymentPopup fetchPurchasePayments={fetchPurchasePayments} PaymentId={PaymentId} setPaymentId={setPaymentId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} fetchPaymentDetails={fetchPaymentDetails} />
+        <PaymentPopup fetchPurchasePayments={fetchPurchasePayments} PaymentId={PaymentId} setPaymentId={setPaymentId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} fetchPaymentDetails={fetchPaymentDetails} remain={remainingAmount} />
       </div>
 
       {loading ? (
@@ -99,9 +88,9 @@ export default function PurchasePayment({ purchaseId, fetchPaymentDetails }) {
       ) : purchasePayments.length === 0 ? (
         <p className="text-muted text-center">No payment records found.</p>
       ) : (
-        <DataTable value={purchasePayments}>
-          <Column field="paymentId" header="#" />
-          <Column field="amount" header="Amount" />
+        <DataTable value={purchasePayments} paginator rows={5} rowsPerPageOptions={[5, 10, 25]} >
+          <Column field="paymentId" header="#" sortable />
+          <Column field="amount" header="Amount" sortable />
           <Column field="paymentMode" header="Payment Mode" />
           <Column field="refNo" header="Reference No" />
           <Column field="paymentDate" header="Payment Date" body={(rowData) => formatDate(rowData.paymentDate)} />

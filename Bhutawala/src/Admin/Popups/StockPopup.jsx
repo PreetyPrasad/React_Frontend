@@ -90,118 +90,47 @@ export default function StockPopup(props) {
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit} className="row">
-                {/* Staff Dropdown */}
                 <div className="col-md-6 mb-2">
                   <b>Staff</b> <span className="text-danger">* {errors.StaffId}</span>
-                  <select
-                    name="StaffId"
-                    className="form-select"
-                    value={values.StaffId || ""}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  >
+                  <select name="StaffId" className="form-select" value={values.StaffId} onChange={handleChange} onBlur={handleBlur}>
                     <option value="">Select Staff</option>
                     {staffs.map((o) => (
-                      <option key={o.staffId} value={o.staffId}>
-                        {o.fullName}
-                      </option>
+                      <option key={o.staffId} value={o.staffId}>{o.fullName} </option>
                     ))}
                   </select>
                 </div>
-
-                {/* Material Dropdown */}
                 <div className="col-md-6 mb-2">
                   <b>Material</b> <span className="text-danger">* {errors.MaterialId}</span>
-                  <select
-                    name="MaterialId"
-                    className="form-select"
-                    value={values.MaterialId || ""}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  >
+                  <select name="MaterialId" className="form-select" value={values.MaterialId || ""} onChange={handleChange} onBlur={handleBlur} >
                     <option value="">Select Material</option>
                     {materials.map((o) => (
-                      <option key={o.materialId} value={o.materialId}>
-                        {o.materialName}
-                      </option>
+                      <option key={o.materialId} value={o.materialId}> {o.materialName}</option>
                     ))}
                   </select>
                 </div>
-
-                {/* Quantity */}
-                <div className="col-md-4 mb-2">
+                <div className="col-md-3 mb-2">
                   <b>Qty</b> <span className="text-danger">* {errors.Qty}</span>
-                  <input
-                    type="number"
-                    name="Qty"
-                    className="form-control"
-                    value={values.Qty || ""}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
+                  <input type="number" name="Qty" className="form-control" value={values.Qty} onChange={handleChange} onBlur={handleBlur} />
                 </div>
-
-                {/* Unit */}
-                <div className="col-md-4 mb-2">
+                <div className="col-md-3 mb-2">
                   <b>Unit</b> <span className="text-danger">* {errors.Unit}</span>
-                  <input
-                    type="text"
-                    name="Unit"
-                    className="form-control"
-                    value={values.Unit || ""}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
+                  <input type="text" name="Unit" className="form-control" value={values.Unit} onChange={handleChange} onBlur={handleBlur} />
                 </div>
-
-                {/* Cost */}
-                <div className="col-md-4 mb-2">
+                <div className="col-md-3 mb-2">
                   <b>Cost</b> <span className="text-danger">* {errors.Cost}</span>
-                  <input
-                    type="number"
-                    name="Cost"
-                    className="form-control"
-                    value={values.Cost || ""}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
+                  <input type="number" name="Cost" className="form-control" value={values.Cost} onChange={handleChange} onBlur={handleBlur} />
                 </div>
-
-                {/* Received Date */}
-                <div className="col-md-4 mb-2">
+                <div className="col-md-3 mb-2">
                   <b>Received Date</b> <span className="text-danger">* {errors.RecivedDate}</span>
-                  <input
-                    type="date"
-                    name="RecivedDate"
-                    className="form-control"
-                    value={values.RecivedDate || ""}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
+                  <input type="date" name="RecivedDate" className="form-control" value={values.RecivedDate} onChange={handleChange} onBlur={handleBlur} />
                 </div>
-
-                {/* Note */}
-                <div className="col-md-4 mb-2">
+                <div className="col-md-6 mb-2">
                   <b>Note</b> <span className="text-danger">* {errors.Note}</span>
-                  <input
-                    type="text"
-                    name="Note"
-                    className="form-control"
-                    value={values.Note || ""}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
+                  <textarea type="text" name="Note" className="form-control" value={values.Note} onChange={handleChange} onBlur={handleBlur} />
                 </div>
-
-                {/* Buttons */}
                 <div className="col-md-12 mb-2">
-                  <button id="btnSave" type="submit" disabled={props.loading} className="btn-custom btn-save">
-                    {!props.loading ? "Save" : "Please Wait"}
-                  </button>
-
-                  <button id="btnCancel" onClick={clearForm} type="button" className="btn-custom btn-cancel">
-                    Cancel
-                  </button>
+                  <button id="btnSave" type="submit" disabled={props.loading} className="btn-custom btn-save">{!props.loading ? "Save" : "Please Wait"}</button>
+                  <button id="btnCancel" onClick={clearForm} type="button" className="btn-custom btn-cancel">Cancel</button>
                 </div>
               </form>
             </div>

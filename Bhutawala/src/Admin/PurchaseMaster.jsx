@@ -135,11 +135,11 @@ export default function PurchaseMaster() {
                   <PurchaseMasterpoppup fetchPurchaseMasters={fetchPurchaseMasters} PurchaseId={PurchaseId} setPurchaseId={setPurchaseId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} />
                 </div>
                 <div className="col-md-12 table-responsive">
-                  <DataTable showGridlines size='small' loading={dataLoading} value={PurchaseMasters} tableStyle={{ minWidth: '50rem' }}>
+                  <DataTable showGridlines size='small' loading={dataLoading} value={PurchaseMasters} tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25]} >
                     <Column header="" body={viewTemplate} className="text-center" style={{ width: "50px" }} />
                     <Column field="supplierName" header="Supplier"></Column>
                     <Column field="billNo" header="Bill No." sortable></Column>
-                    <Column field="transactionYearName" header="Transaction Year"></Column>
+                    <Column field="transactionYearName" header="Transaction Year" sortable></Column>
                     <Column field="grossTotal" header="grossTotal" body={(data) => `₹ ${data.grossTotal.toLocaleString('en-IN')}`}></Column>
                     <Column field="GST Amount" header="GST" body={(data) => `₹ ${data.grossTotal.toLocaleString('en-IN')}`}></ Column>
                     <Column field="gsT_Type" header="GSTType"></Column>

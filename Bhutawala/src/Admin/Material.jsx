@@ -110,7 +110,7 @@ export default function Material() {
                     <Column style={{ width: "100px" }} field="materialId" header="#" sortable></Column>
                     <Column field="category.categoryName" header="Categories" sortable></Column>
                     <Column field="brand" header="Brand" sortable></Column>
-                    <Column field="materialName" header="Categories" sortable></Column>
+                    <Column field="materialName" header="Material Name" sortable></Column>
                     <Column body={unitTemplate} header="Unit" sortable></Column>
                     <Column field="net_Qty" header="net_Qty" sortable></Column>
                     <Column field="gst" header="GST" sortable></Column>

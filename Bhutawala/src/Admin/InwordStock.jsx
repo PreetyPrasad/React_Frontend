@@ -33,7 +33,7 @@ const InwardStock = ({ purchaseId: propPurchaseId }) => {
     setLoading(true);
     try {
       const stockResponse = await getData(`InwardStock/InwordStocks/${purchaseId}`);
-      if (stockResponse?.status?.toUpperCase() === "OK" && Array.isArray(stockResponse?.result)) {
+      if (stockResponse?.status?.toUpperCase() === "OK") {
         setInwardStocks(stockResponse.result);
       } else {
         setInwardStocks([]);
@@ -108,25 +108,30 @@ const InwardStock = ({ purchaseId: propPurchaseId }) => {
     });
     setShow(true);
   };
-
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    if (isNaN(date)) return dateString;
+    return `${String(date.getDate()).padStart(2, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFullYear()}`;
+  };
+  const AddressTemplate = (inwardStocks) => {
+    return `${inwardStocks.qty} ${inwardStocks.unit}`
+  };
   return (
     <div>
       <button type="button" onClick={handleNewInsert} className="open-modal-btn"> Add New Stock  </button>
-      
       {show && (
-        <StockPopup show={show} setShow={setShow} fetchInwardStocks={fetchInwardStocks} stockId={stockId} setStockId={setStockId} initialValue={initialValue} setInitialValue={setInitialValue} setLoading={setLoading} loading={loading}  />
+        <StockPopup show={show} setShow={setShow} fetchInwardStocks={fetchInwardStocks} stockId={stockId} setStockId={setStockId} initialValue={initialValue} setInitialValue={setInitialValue} setLoading={setLoading} loading={loading} />
       )}
-
       {loading ? <p>Loading...</p> : error ? <p className="text-danger">{error}</p> : (
-        <DataTable value={inwardStocks} size="small" showGridlines>
+        <DataTable value={inwardStocks} size="small" paginator rows={5} rowsPerPageOptions={[5, 10, 25]} showGridlines>
           <Column field="stockId" header="#" />
           <Column field="materialName" header="Material Name" />
           <Column field="billNo" header="Bill No" />
-          <Column field="purchaseDate" header="Purchase Date" />
-          <Column field="qty" header="Quantity" />
-          <Column field="unit" header="Unit" />
-          <Column field="cost" header="Cost" />
-          <Column field="recivedDate" header="Received Date" />
+          <Column field="purchaseDate" header="Purchase Date" body={(rowData) => formatDate(rowData.purchaseDate)} />
+          <Column body={AddressTemplate} header="Quantity" />
+          <Column field="cost" header="Cost" body={(data) => `₹ ${data.cost.toLocaleString('en-IN')}`} />
+          <Column field="recivedDate" header="Received Date" body={(rowData) => formatDate(rowData.purchaseDate)} />
           <Column field="note" header="Note" />
           <Column field="staffname" header="Staff Name" />
           <Column body={(rowData) => (
@@ -135,7 +140,7 @@ const InwardStock = ({ purchaseId: propPurchaseId }) => {
 
               <i onClick={() => fetchStockDetail(rowData.stockId)} className="fa-solid fa-pen-to-square text-success"></i>
             </>
-          )}  />
+          )} />
         </DataTable>
       )}
     </div>

@@ -41,10 +41,10 @@ export default function PaymentPopup(props) {
           props.PaymentId === 0 ? "PurchasePayment/Save" : "PurchasePayment/Edit",
           requestData
         );
-
         if (result && result.status.toUpperCase() === "OK") {
           alert("Payment saved successfully.");
           props.fetchPaymentDetails();
+          props.fetchPurchasePayments();
           clearForm();
         } else {
           alert("Payment already exists.");
@@ -98,7 +98,7 @@ export default function PaymentPopup(props) {
                     value={values.Amount}
                     onBlur={handleBlur}
                     onChange={(e) => {
-                      let inputValue = parseFloat(e.target.value) || 0;
+                      let inputValue = parseFloat(e.target.value);
                       if (inputValue < 0) inputValue = 0;
                       if (inputValue > props.remain) inputValue = props.remain;
                       setFieldValue("Amount", inputValue);
@@ -129,7 +129,7 @@ export default function PaymentPopup(props) {
                 <div className="col-md-12 mb-2">
                   <button id="btnSave" type="submit" disabled={props.loading} className="open-modal-btn">
                     {props.loading ? "Please Wait" : "Save"}
-                  </button>
+                  </button>&nbsp;
                   <button id="btnCancel" type="button" className="btn-custom btn-cancel" onClick={clearForm}>Cancel</button>
                 </div>
               </form>

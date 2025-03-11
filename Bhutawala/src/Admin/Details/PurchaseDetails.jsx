@@ -79,14 +79,14 @@ export default function PurchaseDetails() {
 
   if (loading) return <p className="text-center">Loading...</p>;
   if (!purchaseDetail) return <p className="text-center">Purchase details not found.</p>;
-
+  const remainingAmount = (purchaseDetail.gst + purchaseDetail.grossTotal) - totalPaid;
   return (
     <div className="container-fluid">
       <div className="row">
         {/* <p style={{ textAlign: 'right' }}>Remaining: <b>₹ {((purchaseDetail.gst + purchaseDetail.grossTotal) - totalPaid).toLocaleString('en-IN')}</b></p> */}
         <div className="d-flex justify-content-between align-items-center">
           <h1>Purchase Master</h1>
-          <p>Remaining: <b>₹ {((purchaseDetail.gst + purchaseDetail.grossTotal) - totalPaid).toLocaleString('en-IN')}</b></p>
+          <p>Remaining: <b>₹ {remainingAmount.toLocaleString('en-IN')}</b></p>
         </div>
 
         <div className="card">
@@ -129,13 +129,13 @@ export default function PurchaseDetails() {
               )}
               {activeTab === "payment" && (
                 <div>
-                  <h3 className="text-primary">Payment</h3>
+                  <h3 className="text-primary text-center fw-bold my-3"> Payment </h3>
                   <PurchasePayment fetchPaymentDetails={fetchPaymentDetails} purchaseId={purchaseDetail.purchaseId} />
                 </div>
               )}
               {activeTab === "inward" && (
                 <div>
-                  <h3 className="text-primary">Inward Stock</h3>
+                  <h3 className="text-primary text-center fw-bold my-3">Inward Stock</h3>
                   {purchaseDetail?.purchaseId ? (
                     <InwardStock purchaseId={purchaseDetail.purchaseId} />
                   ) : (

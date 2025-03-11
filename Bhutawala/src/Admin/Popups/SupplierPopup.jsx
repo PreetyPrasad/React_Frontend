@@ -2,9 +2,7 @@ import { useFormik } from 'formik';
 import React, { useEffect } from 'react'
 import { SupplierSchema } from '../../Schema';
 import { getData, postData } from '../../API';
-
 export default function SupplierPopup(props) {
-
   const { handleSubmit, handleChange, handleBlur, errors, values, setFieldValue } = useFormik({
     enableReinitialize: true,
     initialValues: props.initialValue,
@@ -29,7 +27,6 @@ export default function SupplierPopup(props) {
         Email: values.Email,
         SupplierId: props.SupplierId
       };
-
       console.log(requestData);
 
       try {
