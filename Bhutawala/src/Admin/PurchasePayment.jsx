@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getData } from "../API"; // Only importing getData
+import { getData } from "../API";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import PaymentPopup from "./Popups/PaymentPopup";
+import PurchaseDetails from "./Details/PurchaseDetails";
 
-export default function PurchasePayment({ purchaseId }) {
+export default function PurchasePayment({ purchaseId, fetchPaymentDetails }) {
   const [show, setShow] = useState(false);
   const [purchasePayments, setPurchasePayments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,6 @@ export default function PurchasePayment({ purchaseId }) {
     RefNo: "",
   });
 
-  // ✅ Fetch Purchase Payments
   const fetchPurchasePayments = async () => {
     if (!purchaseId) return;
     setLoading(true);
@@ -47,7 +47,7 @@ export default function PurchasePayment({ purchaseId }) {
     setShow(true);
   };
 
-  // ✅ Format Date Function
+
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
@@ -63,6 +63,7 @@ export default function PurchasePayment({ purchaseId }) {
         const response = await getData(`PurchasePayment/Remove/${purchaseId}`);
         if (response.status === "OK") {
           fetchPurchasePayments();
+          fetchPaymentDetails();
         } else {
           console.log("Something went wrong");
         }
@@ -77,10 +78,7 @@ export default function PurchasePayment({ purchaseId }) {
 
   const deleteTemplate = (payment) => {
     return (
-      <i
-        onClick={() => deletePurchasePayment(payment.purchaseId)}
-        className="fas fa-trash"
-      ></i>
+      <i onClick={() => deletePurchasePayment(payment.purchaseId)} className="fas fa-trash text-danger"></i>
     );
   };
 
@@ -89,7 +87,7 @@ export default function PurchasePayment({ purchaseId }) {
       <button className="btn btn-primary" onClick={openPopup}>Add Payment</button>
 
       <div className="col-md-12 mb-2">
-        <PaymentPopup fetchPurchasePayments={fetchPurchasePayments} PaymentId={PaymentId} setPaymentId={setPaymentId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} />
+        <PaymentPopup fetchPurchasePayments={fetchPurchasePayments} PaymentId={PaymentId} setPaymentId={setPaymentId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} fetchPaymentDetails={fetchPaymentDetails} />
       </div>
 
       {loading ? (

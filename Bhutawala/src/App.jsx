@@ -11,7 +11,6 @@ import StaffMaster from "./Admin/StaffMaster";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import InvoiceMaster from "./Admin/InvoiceMaster";
-import InwordStock from "./Admin/InwordStock";
 import PurchaseReturn from "./Admin/PurchaseReturn";
 import InvoiceDetail from "./Admin/InvoiceDetail";
 import PurchasePayment from "./Admin/PurchasePayment";
@@ -29,7 +28,7 @@ function App() {
         <Route path="/PurchaseMaster" element={<Demo Component={<PurchaseMaster />} />} />
         <Route path="/StaffMaster" element={<Demo Component={<StaffMaster />} />} />
         <Route path="/InvoiceMaster" element={<Demo Component={<InvoiceMaster />} />} />
-        <Route path="/InwordStock" element={<Demo Component={<InwordStock />} />} />
+      
         <Route path="/PurchaseReturn" element={<Demo Component={<PurchaseReturn />} />} />
         <Route path="/InvoiceDetail" element={<Demo Component={<InvoiceDetail />} />} />
         <Route path="/PurchasePayment" element={<Demo Component={<PurchasePayment />} />} />

@@ -218,10 +218,7 @@ export default function Sidebar(props) {
             </li>
             {/* Matereial */}
             <li className="nav-item">
-              <Link to="/Material" className="nav-link">
-                <i className="fa fa-cart-plus" style={{ marginRight: 5 }} />
-                <span data-key="t-landing">Material</span>
-              </Link>
+              <Link to="/Material" className="nav-link"><i className="fa fa-cart-plus" style={{ marginRight: 5 }} /><span data-key="t-landing">Material</span> </Link>
             </li>
             <li className="nav-item">
               <a
@@ -244,8 +241,7 @@ export default function Sidebar(props) {
               </div>
               <div className="collapse menu-dropdown" id="sidebarLanding">
                 <ul className="nav nav-sm flex-column">
-                  <li className="nav-item">
-                    <Link to="/InwordStock" className="nav-link"><span data-key="t-landing">Stock</span></Link>
+                  <li className="nav-item"><Link to="/InwordStock" className="nav-link"><span data-key="t-landing">Stock</span></Link>
                   </li>
                 </ul>
               </div>
@@ -303,69 +299,6 @@ export default function Sidebar(props) {
                   </li>
                   <li className="nav-item">
                     <a
-                      href="advance-ui-nestable.html"
-                      className="nav-link"
-                      data-key="t-nestable-list"
-                    >
-                      Nestable List
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="advance-ui-scrollbar.html"
-                      className="nav-link"
-                      data-key="t-scrollbar"
-                    >
-                      Scrollbar
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="advance-ui-animation.html"
-                      className="nav-link"
-                      data-key="t-animation"
-                    >
-                      Animation
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="advance-ui-tour.html"
-                      className="nav-link"
-                      data-key="t-tour"
-                    >
-                      Tour
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="advance-ui-swiper.html"
-                      className="nav-link"
-                      data-key="t-swiper-slider"
-                    >
-                      Swiper Slider
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="advance-ui-ratings.html"
-                      className="nav-link"
-                      data-key="t-ratings"
-                    >
-                      Ratings
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="advance-ui-highlight.html"
-                      className="nav-link"
-                      data-key="t-highlight"
-                    >
-                      Highlight
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
                       href="advance-ui-scrollspy.html"
                       className="nav-link"
                       data-key="t-scrollSpy"
@@ -398,53 +331,6 @@ export default function Sidebar(props) {
                 <ul className="nav nav-sm flex-column">
                   <li className="nav-item">
                     <a
-                      href="forms-elements.html"
-                      className="nav-link"
-                      data-key="t-basic-elements"
-                    >
-                      Basic Elements
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="forms-select.html"
-                      className="nav-link"
-                      data-key="t-form-select"
-                    >
-                      {" "}
-                      Form Select{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="forms-checkboxs-radios.html"
-                      className="nav-link"
-                      data-key="t-checkboxs-radios"
-                    >
-                      Checkboxs &amp; Radios
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="forms-pickers.html"
-                      className="nav-link"
-                      data-key="t-pickers"
-                    >
-                      {" "}
-                      Pickers{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="forms-masks.html"
-                      className="nav-link"
-                      data-key="t-input-masks"
-                    >
-                      Input Masks
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
                       href="forms-advanced.html"
                       className="nav-link"
                       data-key="t-advanced"
@@ -460,51 +346,6 @@ export default function Sidebar(props) {
                     >
                       {" "}
                       Range Slider{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="forms-validation.html"
-                      className="nav-link"
-                      data-key="t-validation"
-                    >
-                      Validation
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="forms-wizard.html"
-                      className="nav-link"
-                      data-key="t-wizard"
-                    >
-                      Wizard
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="forms-editors.html"
-                      className="nav-link"
-                      data-key="t-editors"
-                    >
-                      Editors
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="forms-file-uploads.html"
-                      className="nav-link"
-                      data-key="t-file-uploads"
-                    >
-                      File Uploads
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="forms-layouts.html"
-                      className="nav-link"
-                      data-key="t-form-layouts"
-                    >
-                      Form Layouts
                     </a>
                   </li>
                   <li className="nav-item">
@@ -540,24 +381,6 @@ export default function Sidebar(props) {
                       data-key="t-basic-tables"
                     >
                       Basic Tables
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="tables-gridjs.html"
-                      className="nav-link"
-                      data-key="t-grid-js"
-                    >
-                      Grid Js
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="tables-listjs.html"
-                      className="nav-link"
-                      data-key="t-list-js"
-                    >
-                      List Js
                     </a>
                   </li>
                   <li className="nav-item">
@@ -651,128 +474,8 @@ export default function Sidebar(props) {
                             {" "}
                             Mixed
                           </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-timeline.html"
-                            className="nav-link"
-                            data-key="t-timeline"
-                          >
-                            Timeline{" "}
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-range-area.html"
-                            className="nav-link"
-                            data-key="t-range-area"
-                          >
-                            Range Area
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-funnel.html"
-                            className="nav-link"
-                            data-key="t-funnel"
-                          >
-                            Funnel
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-candlestick.html"
-                            className="nav-link"
-                            data-key="t-candlstick"
-                          >
-                            {" "}
-                            Candlstick{" "}
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-boxplot.html"
-                            className="nav-link"
-                            data-key="t-boxplot"
-                          >
-                            Boxplot{" "}
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-bubble.html"
-                            className="nav-link"
-                            data-key="t-bubble"
-                          >
-                            Bubble{" "}
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-scatter.html"
-                            className="nav-link"
-                            data-key="t-scatter"
-                          >
-                            Scatter{" "}
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-heatmap.html"
-                            className="nav-link"
-                            data-key="t-heatmap"
-                          >
-                            Heatmap{" "}
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-treemap.html"
-                            className="nav-link"
-                            data-key="t-treemap"
-                          >
-                            Treemap{" "}
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-pie.html"
-                            className="nav-link"
-                            data-key="t-pie"
-                          >
-                            {" "}
-                            Pie{" "}
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-radialbar.html"
-                            className="nav-link"
-                            data-key="t-radialbar"
-                          >
-                            {" "}
-                            Radialbar{" "}
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-radar.html"
-                            className="nav-link"
-                            data-key="t-radar"
-                          >
-                            {" "}
-                            Radar
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            href="charts-apex-polar.html"
-                            className="nav-link"
-                            data-key="t-polar-area"
-                          >
-                            Polar Area{" "}
-                          </a>
-                        </li>
+                        </li>         
+                      
                         <li className="nav-item">
                           <a href="charts-apex-slope.html" className="nav-link">
                             <span data-key="t-slope">Slope</span>{" "}

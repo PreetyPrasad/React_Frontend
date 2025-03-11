@@ -4,9 +4,17 @@ import { purchasePaymentSchema } from '../../Schema';
 import { postData } from '../../API';
 
 export default function PaymentPopup(props) {
+  console.log("Remaining Amount:", props.remain);
+
   const { handleBlur, handleChange, handleSubmit, setFieldValue, errors, values } = useFormik({
     enableReinitialize: true,
-    initialValues: props.initialValue,
+    initialValues: {
+      PurchaseId: props.initialValue.PurchaseId,
+      Amount: props.remain > 0 ? props.remain : "",
+      PaymentMode: props.initialValue.PaymentMode,
+      RefNo: props.initialValue.RefNo,
+      PaymentDate: props.initialValue.PaymentDate
+    },
     validationSchema: purchasePaymentSchema,
     onSubmit: async (values) => {
       if (values.Amount <= 0) {
@@ -36,7 +44,7 @@ export default function PaymentPopup(props) {
 
         if (result && result.status.toUpperCase() === "OK") {
           alert("Payment saved successfully.");
-          props.fetchPurchasePayments();
+          props.fetchPaymentDetails();
           clearForm();
         } else {
           alert("Payment already exists.");
@@ -51,11 +59,13 @@ export default function PaymentPopup(props) {
   });
 
   useEffect(() => {
-    if (props.PurchaseId) {
-      setFieldValue("Amount", props.Amount);
+    if (props.PurchaseId && props.remain !== undefined) {
+      console.log("Updating Amount to:", props.remain);
+      setFieldValue("Amount", props.remain || "");
       setFieldValue("PurchaseId", props.PurchaseId);
     }
-  }, [props.Amount, props.PurchaseId, setFieldValue]);
+  }, [props.remain, props.PurchaseId, setFieldValue]);
+
   const clearForm = () => {
     props.setInitialValue({
       PurchaseId: "",
@@ -80,20 +90,32 @@ export default function PaymentPopup(props) {
               <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="row">
                 <div className="col-md-12 mb-2">
                   <b>Amount</b> <span className="text-danger">*{errors.Amount}</span>
-                  <input type="number" className="form-control" name="Amount" value={values.Amount} onBlur={handleBlur} onChange={(e) => { let inputValue = parseFloat(e.target.value) || 0; if (inputValue < 0) inputValue = 0; if (inputValue > props.remain) inputValue = props.remain; setFieldValue("Amount", inputValue); }} min="1" max={props.remain} />
+                  <div className="form-text">Available Balance: ₹{props.remain}</div>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="Amount"
+                    value={values.Amount}
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      let inputValue = parseFloat(e.target.value) || 0;
+                      if (inputValue < 0) inputValue = 0;
+                      if (inputValue > props.remain) inputValue = props.remain;
+                      setFieldValue("Amount", inputValue);
+                    }}
+                    min="1"
+                    max={props.remain}
+                  />
                 </div>
+
                 <div className="col-md-12 mb-2">
                   <b>RefNo</b> <span className="text-danger">*{errors.RefNo}</span>
                   <input type="text" className="form-control" name="RefNo" value={values.RefNo} onBlur={handleBlur} onChange={handleChange} />
                 </div>
                 <div className="col-md-12 mb-2">
                   <b>Payment Date</b> <span className="text-danger">*{errors.PaymentDate}</span>
-                  <input type="Date" className="form-control" name="PaymentDate" value={values.PaymentDate} onBlur={handleBlur} onChange={handleChange} />
+                  <input type="date" className="form-control" name="PaymentDate" value={values.PaymentDate} onBlur={handleBlur} onChange={handleChange} />
                 </div>
-                {/* <div className="col-md-12 mb-2"> */}
-                {/* <b>Purchase ID</b> */}
-                {/* <input type="text" className="form-control" name="PurchaseId" value={values.PurchaseId} disabled /> */}
-                {/* </div> */}
                 <div className="col-md-12 mb-2">
                   <b>Payment Mode</b> <span className="text-danger">*{errors.PaymentMode}</span>
                   <select name="PaymentMode" value={values.PaymentMode} onBlur={handleBlur} onChange={handleChange} className="form-control">

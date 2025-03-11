@@ -3,10 +3,12 @@ import { useParams } from "react-router-dom";
 import { getData } from "../../API";
 import PurchasePayment from "../PurchasePayment";
 import InwardStock from "../InwordStock";
+
 export default function PurchaseDetails() {
   const { id } = useParams();
   const [purchaseDetail, setPurchaseDetail] = useState(null);
   const [totalPaid, setTotalPaid] = useState(0);
+  const [purchasePayments, setPurchasePayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("details");
   const [inwardStock, setInwardStock] = useState([]);
@@ -16,17 +18,8 @@ export default function PurchaseDetails() {
       const purchaseResponse = await getData(`PurchaseMaster/Details/${id}`);
       if (purchaseResponse.status.toUpperCase() === "OK") {
         const purchaseDetail = purchaseResponse.result;
-        const suppliersResponse = await getData("Supplier/List");
-        const transactionYearsResponse = await getData("TransactionYear/List");
-        if (suppliersResponse.status === "OK" && transactionYearsResponse.status === "OK") {
-          const suppliersMap = new Map(suppliersResponse.result.map(s => [s.supplierId, s.businessName]));
-          const transactionYearsMap = new Map(transactionYearsResponse.result.map(t => [t.transactionYearId, t.yearName]));
-          setPurchaseDetail({
-            ...purchaseDetail, supplierName: suppliersMap.get(purchaseDetail.supplierId),
-            transactionYearName: transactionYearsMap.get(purchaseDetail.transactionYearId),
-          });
-          fetchPaymentDetails(purchaseDetail.purchaseId);
-        }
+        setPurchaseDetail(purchaseDetail);
+        fetchPaymentDetails(purchaseDetail.purchaseId);
       } else {
         console.error("Error fetching purchase details");
       }
@@ -36,17 +29,13 @@ export default function PurchaseDetails() {
       setLoading(false);
     }
   };
-
-  const fetchInwordDetails = async (purchaseId) => {
-    if (!purchaseId) {
-      return;
-    }
+  const fetchInwardDetails = async (purchaseId) => {
+    if (!purchaseId) return;
     try {
       const response = await getData(`InwardStock/Details/${purchaseId}`);
       if (response.status === "OK" && response.result) {
         setInwardStock(response.result);
       } else {
-        console.warn("Inward stock details not found in API!");
         setInwardStock([]);
       }
     } catch (error) {
@@ -55,40 +44,30 @@ export default function PurchaseDetails() {
   };
 
   const fetchPaymentDetails = async (purchaseId) => {
-    if (!purchaseId) {
-      return;
-    }
+    if (!purchaseId) return;
     try {
       const paymentResponse = await getData(`PurchasePayment/Details/${purchaseId}`);
       if (paymentResponse.status === "OK" && paymentResponse.result) {
         setTotalPaid(paymentResponse.result.paid);
       } else {
-        console.warn("Payment details not found in API!");
         setTotalPaid(0);
       }
     } catch (error) {
       console.error("Error fetching payment details:", error);
     }
-
   };
+
   useEffect(() => {
     if (id) {
-      console.log(" Fetching purchase details for ID:", id);
-      fetchPurchaseDetail(id);
+      setInterval(() => {
+        fetchPurchaseDetail(id);
+      }, 2000);
     }
   }, [id]);
 
   useEffect(() => {
     if (purchaseDetail?.purchaseId) {
-      console.log(" Fetching payment for Purchase ID:", purchaseDetail.purchaseId);
-      fetchPaymentDetails(purchaseDetail.purchaseId);
-    }
-  }, [purchaseDetail]);
-
-  useEffect(() => {
-    if (purchaseDetail?.purchaseId) {
-      console.log(" Fetching inward stock for Purchase ID:", purchaseDetail.purchaseId);
-      fetchInwordDetails(purchaseDetail.purchaseId);
+      fetchInwardDetails(purchaseDetail.purchaseId);
     }
   }, [purchaseDetail]);
 
@@ -97,27 +76,31 @@ export default function PurchaseDetails() {
     const date = new Date(dateString);
     return isNaN(date) ? dateString : date.toLocaleDateString("en-GB");
   };
-  
+
   if (loading) return <p className="text-center">Loading...</p>;
   if (!purchaseDetail) return <p className="text-center">Purchase details not found.</p>;
-  const grossTotal = purchaseDetail.grossTotal;
-  const gst = purchaseDetail.gst;
-  const totalAmount = grossTotal + gst;
-  const remainingAmount = totalAmount - totalPaid;
 
   return (
     <div className="container-fluid">
       <div className="row">
-        <p style={{ textAlign: 'right' }}>Remaining : <b> ₹ {remainingAmount.toLocaleString('en-IN')}</b></p>
+        {/* <p style={{ textAlign: 'right' }}>Remaining: <b>₹ {((purchaseDetail.gst + purchaseDetail.grossTotal) - totalPaid).toLocaleString('en-IN')}</b></p> */}
+        <div className="d-flex justify-content-between align-items-center">
+          <h1>Purchase Master</h1>
+          <p>Remaining: <b>₹ {((purchaseDetail.gst + purchaseDetail.grossTotal) - totalPaid).toLocaleString('en-IN')}</b></p>
+        </div>
+
         <div className="card">
           <div className="row">
             <div className="card-header p-0 border-bottom-0">
               <ul className="nav nav-tabs" role="tablist">
                 <li className="nav-item">
-                  <button className={`nav-link ${activeTab === "details" ? "active" : ""}`} onClick={() => setActiveTab("details")}>Purchase Details </button>
+                  <button className={`nav-link ${activeTab === "details" ? "active" : ""}`} onClick={() => setActiveTab("details")}>
+                    Purchase Details
+                  </button>
                 </li>
                 <li className="nav-item">
-                  <button className={`nav-link ${activeTab === "payment" ? "active" : ""}`} onClick={() => setActiveTab("payment")}> Payment
+                  <button className={`nav-link ${activeTab === "payment" ? "active" : ""}`} onClick={() => setActiveTab("payment")}>
+                    Payment
                   </button>
                 </li>
                 <li className="nav-item">
@@ -132,26 +115,22 @@ export default function PurchaseDetails() {
                 <div className="row g-3">
                   <h3 className="text-primary">Purchase Details</h3>
                   <div className="col-md-6">
-                    <p>Supplier:<span /><strong><h5>{purchaseDetail?.supplierName || "N/A"}</h5></strong></p>
-                    <p>Bill No:<span /> <strong> <h5>{purchaseDetail?.billNo || "N/A"}</h5></strong></p>
-                    <p>Transaction Year:<span /><strong><h5>{purchaseDetail?.transactionYearName || "N/A"}</h5></strong></p>
+                    <p>Bill No: <strong><h5>{purchaseDetail?.billNo || "N/A"}</h5></strong></p>
+                    <p>GST Type: <strong><h5> {purchaseDetail.gsT_Type}</h5></strong></p>
+                    <p>Purchase Date: <strong><h5>{formatDate(purchaseDetail.purchaseDate)}</h5></strong></p>
+                    <p>Notice Period: <strong><h5>{formatDate(purchaseDetail.noticePeriod)}</h5></strong></p>
                   </div>
                   <div className="col-md-6">
-                    <p>Gross Total:<span /><strong><h5> ₹{purchaseDetail.grossTotal?.toLocaleString('en-IN')}</h5></strong></p>
-                    <p>GST:<span /><strong><h5>₹{purchaseDetail.gst?.toLocaleString('en-IN')}</h5></strong></p>
-                    <p>Total:<span /><strong><h5> ₹{totalAmount.toLocaleString('en-IN')} </h5></strong></p>
+                    <p>Gross Total: <strong><h5> ₹{purchaseDetail.grossTotal?.toLocaleString('en-IN')}</h5></strong></p>
+                    <p>GST: <strong><h5>₹{purchaseDetail.gst?.toLocaleString('en-IN')}</h5></strong></p>
+                    <p>Total: <strong><h5> ₹{(purchaseDetail.gst + purchaseDetail.grossTotal).toLocaleString('en-IN')} </h5></strong></p>
                   </div>
-                  <div className="col-md-6">
-                    <p>GST Type:<span /><strong><h5> {purchaseDetail.gsT_Type}</h5></strong></p>
-                    <p>Purchase Date:<span /><strong><h5>{formatDate(purchaseDetail.purchaseDate)}</h5></strong></p>
-                  </div>
-                  <div className="col-md-6"><p>Notice Period:<br /><strong><h5>{formatDate(purchaseDetail.noticePeriod)}</h5></strong></p></div>
                 </div>
               )}
               {activeTab === "payment" && (
                 <div>
                   <h3 className="text-primary">Payment</h3>
-                  <PurchasePayment purchaseId={purchaseDetail.purchaseId} />
+                  <PurchasePayment fetchPaymentDetails={fetchPaymentDetails} purchaseId={purchaseDetail.purchaseId} />
                 </div>
               )}
               {activeTab === "inward" && (
@@ -164,7 +143,6 @@ export default function PurchaseDetails() {
                   )}
                 </div>
               )}
-
             </div>
           </div>
         </div>
