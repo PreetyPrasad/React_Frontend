@@ -4,7 +4,6 @@ import { purchasePaymentSchema } from '../../Schema';
 import { postData } from '../../API';
 
 export default function PaymentPopup(props) {
-  console.log("Remaining Amount:", props.remain);
 
   const { handleBlur, handleChange, handleSubmit, setFieldValue, errors, values } = useFormik({
     enableReinitialize: true,

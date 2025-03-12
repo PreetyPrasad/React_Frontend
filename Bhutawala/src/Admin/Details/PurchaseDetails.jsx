@@ -130,7 +130,7 @@ export default function PurchaseDetails() {
               {activeTab === "payment" && (
                 <div>
                   <h3 className="text-primary text-center fw-bold my-3"> Payment </h3>
-                  <PurchasePayment fetchPaymentDetails={fetchPaymentDetails} purchaseId={purchaseDetail.purchaseId} />
+                  <PurchasePayment fetchPaymentDetails={fetchPaymentDetails} purchaseId={purchaseDetail.purchaseId} remainingAmount={remainingAmount} />
                 </div>
               )}
               {activeTab === "inward" && (

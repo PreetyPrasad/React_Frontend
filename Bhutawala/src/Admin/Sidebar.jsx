@@ -236,12 +236,13 @@ export default function Sidebar(props) {
                   </li>
                 </ul>
               </div>
-              {/* <div className="collapse menu-dropdown" id="sidebarLanding"> */}
-              {/* <ul className="nav nav-sm flex-column"> */}
-              {/* <li className="nav-item"><Link to="/InwordStock" className="nav-link"><span data-key="t-landing">Stock</span></Link> */}
-              {/* </li> */}
-              {/* </ul> */}
-              {/* </div> */}
+              <div className="collapse menu-dropdown" id="sidebarLanding">
+                <ul className="nav nav-sm flex-column">
+                  <li className="nav-item">
+                    <Link to="/PurchaseReturn" className="nav-link"><span data-key="t-landing">PurchaseReturn</span></Link>
+                  </li>
+                </ul>
+              </div>
             </li>
 
             <li className="nav-item">
@@ -263,9 +264,9 @@ export default function Sidebar(props) {
                 <div className="row">
                   <div className="col-lg-4">
                     <ul className="nav nav-sm flex-column">
-                      <li className="nav-item">
-                        <Link to="/InvoiceMaster" className="nav-link"><span data-key="t-landing">Stock</span></Link>
-                      </li>
+                      {/* <li className="nav-item"> */}
+                        {/* <Link to="/InvoiceMaster" className="nav-link"><span data-key="t-landing">Stock</span></Link> */}
+                      {/* </li> */}
                     </ul>
                   </div>
                 </div>

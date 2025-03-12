@@ -118,7 +118,7 @@ export default function PurchaseMaster() {
       <i
         className="pi pi-list"
         style={{ cursor: "pointer", fontSize: "1.2rem" }}
-        onClick={() => navigate(`/Purchase/Details/${purchaseMaster.purchaseId}`)} // Ensure correct URL
+        onClick={() => navigate(`/Purchase/Details/${purchaseMaster.purchaseId}`)} 
       ></i>
     );
   };
