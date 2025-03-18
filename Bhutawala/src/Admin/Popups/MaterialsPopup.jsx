@@ -2,7 +2,8 @@ import { useFormik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { MaterialSchema } from '../../Schema';
 import { getData, postData } from '../../API';
-import "../../Admin/Style.css";
+import { errorAlert, successAlert } from '../../SweetAlert/SuccessAlert';
+
 export default function MaterialPopup(props) {
   const [categories, setCategories] = useState([]);
 
@@ -13,14 +14,17 @@ export default function MaterialPopup(props) {
       if (response.status == "OK") {
         setCategories(response.result);
         console.log(response.result);
+
       } else {
         console.log("Something went wrong");
       }
     } catch (error) {
-      console.error("Error fetching data in component:", error);
+      errorAlert("fetching data in component:", error);
     }
   };
-  const { handleSubmit, handleChange, handleBlur, errors, values, setFieldValue } = useFormik({
+
+
+  const { handleSubmit, handleChange, handleBlur, errors, values, resetForm, setFieldValue } = useFormik({
     enableReinitialize: true,
     initialValues: props.initialValue,
     validationSchema: MaterialSchema,
@@ -35,22 +39,28 @@ export default function MaterialPopup(props) {
         Brand: values.Brand,
         GST: values.GST,
         GST_Type: values.GST_Type,
+        Price: values.Price,
         MaterialId: props.MaterialId
       };
+
       try {
         props.setLoading(true);
         const result = await postData(
-          props.MaterialId === 0 ? "Material/Save" : "Material/Edit",
+          props.MaterialId == 0 ? "Material/Save" : "Material/Edit",
           requestData
         );
         console.log(result);
+        resetForm();
         if (result.status.toUpperCase() === "OK") {
-          alert("Successsfully Saved");
+
+          successAlert("Saved", "Successfully Saved.!");
           props.fetchMaterials();
+          resetForm();
           clearForm();
+
         }
         else {
-          alert("Already Exists");
+          console.log(result);
         }
       }
       catch (error) {
@@ -76,7 +86,8 @@ export default function MaterialPopup(props) {
       Description: "",
       Brand: "",
       GST: "",
-      GST_Type: ""
+      GST_Type: "",
+      Price: ""
     });
     props.setShow(false);
   }
@@ -94,7 +105,7 @@ export default function MaterialPopup(props) {
   return (
     <>
       <div className={props.show ? "modal show" : "modal"} style={props.show ? { display: "block" } : null} id="MaterialModal">
-        <div className="modal-dialog modal-xl">
+        <div className="modal-dialog modal-xl model-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
               <h4 className="modal-title">Material</h4>
@@ -115,11 +126,11 @@ export default function MaterialPopup(props) {
                         }
                       </select>
                     </div>
-                    <div className="col-md-6 mb-2">
+                    <div className="col-md-4 mb-2">
                       <b>Brand</b> <span className='text-danger'>*{errors.Brand}</span>
                       <input type="text" value={values.Brand} onChange={handleChange} onBlur={handleBlur} id='Brand' name='Brand' className='form-control' placeholder='Brand' />
                     </div>
-                    <div className="col-md-6 mb-2">
+                    <div className="col-md-8 mb-2">
                       <b>Name</b> <span className='text-danger'>*{errors.MaterialName}</span>
                       <input type="text" value={values.MaterialName} onChange={handleChange} onBlur={handleBlur} id='MaterialName' name='MaterialName' className='form-control' placeholder='Material' />
                     </div>
@@ -133,11 +144,12 @@ export default function MaterialPopup(props) {
                         <option value="">Select Unit</option>
                         <option value="KG">KG</option>
                         <option value="TONS">TONS</option>
+                        <option value="TAGARA">TAGARA</option>
                       </select>
                     </div>
                     <div className="col-md-4 mb-2">
                       <b>Net Qty</b> <span className='text-danger'>*{errors.Net_Qty}</span>
-                      <input type="text" value={values.Net_Qty} onChange={handleChange} onBlur={handleBlur} id='Net_Qty' name='Net_Qty' className='form-control' placeholder='Net_Qty' />
+                      <input type="text" value={values.Net_Qty} onChange={handleChange} onBlur={handleBlur} id='Net_Qty' name='Net_Qty' className='form-control' placeholder='Net Qty' />
                     </div>
                   </div>
                 </div>
@@ -147,11 +159,15 @@ export default function MaterialPopup(props) {
                       <b>Description</b> <span className='text-danger'>*{errors.Description}</span>
                       <textarea style={{ height: "102px" }} value={values.Description} onChange={handleChange} onBlur={handleBlur} id='Description' name='Description' className='form-control' placeholder='Description'></textarea>
                     </div>
-                    <div className="col-md-6 mb-2">
+                    <div className="col-md-4 mb-2">
+                      <b>Price</b> <span className='text-danger'>*{errors.Price}</span>
+                      <input type="text" value={values.Price} onChange={handleChange} onBlur={handleBlur} id='Price' name='Price' className='form-control' placeholder='₹ Price' />
+                    </div>
+                    <div className="col-md-4 mb-2">
                       <b>GST</b> <span className='text-danger'>*{errors.GST}</span>
                       <input type="text" value={values.GST} onChange={handleChange} onBlur={handleBlur} id='GST' name='GST' className='form-control' placeholder='GST' />
                     </div>
-                    <div className="col-md-6 mb-2">
+                    <div className="col-md-4 mb-2">
                       <b>GST Type</b> <span className='text-danger'>*{errors.GST_Type}</span>
                       <select onChange={(e) => setContentValues("GST_Type", e.target.value)} name="GST_Type" id="drpGST_Type" className='form-select'>
                         <option value="">Select Unit</option>
@@ -162,8 +178,8 @@ export default function MaterialPopup(props) {
                   </div>
                 </div>
                 <div className="col-md-12 mb-2">
-                  <button id='btnSave' type='submit' disabled={!props.loading ? false : true} className="btn-custom btn-save">{!props.loading ? "Save" : "Please Wait"}</button>&nbsp;
-                  <button id='btnCancle' onClick={() => clearForm()} type='reset' className="btn-custom btn-cancel">Cancle</button>
+                  <button id='btnSave' type='submit' disabled={!props.loading ? false : true} style={{ backgroundColor: 'var(--green-500)', color: 'var(--indigo-50)', borderRadius: 'var(--border-radius)', padding: '0.9rem' }} className='btn btn-primary btn-lg'>{!props.loading ? "Save" : "Please Wait"}</button>&nbsp;
+                  <button id='btnCancle' onClick={() => clearForm()} type='reset' style={{ backgroundColor: 'var(--red-600)', color: 'var(--indigo-50)', borderRadius: 'var(--border-radius)', padding: '0.9rem' }} className='btn btn-danger btn-lg'>Cancle</button>
                 </div>
               </form>
             </div>

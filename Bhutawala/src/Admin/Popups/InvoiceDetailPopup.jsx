@@ -162,9 +162,7 @@ export default function InvoiceDetailPopup(props) {
                         className='form-control' placeholder='Rate' />
                     </div>
                   </div>
-                  </div>
-
-                
+                  </div>                
                 <div className="col-md-12 mb-2">
                   <button type='submit' disabled={props.loading} className='btn-custom btn-save'>
                     {props.loading ? "Please Wait" : "Save"}

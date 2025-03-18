@@ -8,7 +8,6 @@ export default function PurchaseDetails() {
   const { id } = useParams();
   const [purchaseDetail, setPurchaseDetail] = useState(null);
   const [totalPaid, setTotalPaid] = useState(0);
-  const [purchasePayments, setPurchasePayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("details");
   const [inwardStock, setInwardStock] = useState([]);
@@ -39,16 +38,18 @@ export default function PurchaseDetails() {
         setInwardStock([]);
       }
     } catch (error) {
-      console.error("Error fetching inward stock details:", error);
+      console.error("Error fetching inward stock details:",
+        error);
     }
   };
 
   const fetchPaymentDetails = async (purchaseId) => {
     if (!purchaseId) return;
     try {
-      const paymentResponse = await getData(`PurchasePayment/Details/${purchaseId}`);
+      const paymentResponse = await getData(`PurchasePayment/PurchasePayments/${purchaseId}`);
       if (paymentResponse.status === "OK" && paymentResponse.result) {
-        setTotalPaid(paymentResponse.result.paid);
+        const totalPaidAmount = paymentResponse.result.reduce((sum, payment) => sum + payment.amount, 0);
+        setTotalPaid(totalPaidAmount);
       } else {
         setTotalPaid(0);
       }
@@ -71,6 +72,8 @@ export default function PurchaseDetails() {
     }
   }, [purchaseDetail]);
 
+
+
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
@@ -80,10 +83,10 @@ export default function PurchaseDetails() {
   if (loading) return <p className="text-center">Loading...</p>;
   if (!purchaseDetail) return <p className="text-center">Purchase details not found.</p>;
   const remainingAmount = (purchaseDetail.gst + purchaseDetail.grossTotal) - totalPaid;
+
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* <p style={{ textAlign: 'right' }}>Remaining: <b>₹ {((purchaseDetail.gst + purchaseDetail.grossTotal) - totalPaid).toLocaleString('en-IN')}</b></p> */}
         <div className="d-flex justify-content-between align-items-center">
           <h1>Purchase Master</h1>
           <p>Remaining: <b>₹ {remainingAmount.toLocaleString('en-IN')}</b></p>
@@ -115,15 +118,17 @@ export default function PurchaseDetails() {
                 <div className="row g-3">
                   <h3 className="text-primary">Purchase Details</h3>
                   <div className="col-md-6">
+                    {/* <p>SupplierName<strong><h5>{formatDate(purchaseDetail?.businessName)}</h5></strong></p> */}
                     <p>Bill No: <strong><h5>{purchaseDetail?.billNo || "N/A"}</h5></strong></p>
                     <p>GST Type: <strong><h5> {purchaseDetail.gsT_Type}</h5></strong></p>
                     <p>Purchase Date: <strong><h5>{formatDate(purchaseDetail.purchaseDate)}</h5></strong></p>
-                    <p>Notice Period: <strong><h5>{formatDate(purchaseDetail.noticePeriod)}</h5></strong></p>
+
                   </div>
                   <div className="col-md-6">
                     <p>Gross Total: <strong><h5> ₹{purchaseDetail.grossTotal?.toLocaleString('en-IN')}</h5></strong></p>
                     <p>GST: <strong><h5>₹{purchaseDetail.gst?.toLocaleString('en-IN')}</h5></strong></p>
                     <p>Total: <strong><h5> ₹{(purchaseDetail.gst + purchaseDetail.grossTotal).toLocaleString('en-IN')} </h5></strong></p>
+                    <p>Notice Period: <strong><h5>{formatDate(purchaseDetail.noticePeriod)}</h5></strong></p>
                   </div>
                 </div>
               )}
@@ -132,12 +137,10 @@ export default function PurchaseDetails() {
                   <h3 className="text-primary text-center fw-bold my-3"> Payment </h3>
                   <PurchasePayment fetchPaymentDetails={fetchPaymentDetails} purchaseId={purchaseDetail.purchaseId} remainingAmount={remainingAmount} />
                 </div>
-              )}
-              {activeTab === "inward" && (
+              )} {activeTab === "inward" && (
                 <div>
                   <h3 className="text-primary text-center fw-bold my-3">Inward Stock</h3>
-                  {purchaseDetail?.purchaseId ? (
-                    <InwardStock purchaseId={purchaseDetail.purchaseId} />
+                  {purchaseDetail?.purchaseId ? (<InwardStock purchaseId={purchaseDetail.purchaseId} />
                   ) : (
                     <p>Purchase ID is not available</p>
                   )}

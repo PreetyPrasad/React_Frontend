@@ -8,7 +8,6 @@ import StockPopup from "./Popups/StockPopup";
 const InwardStock = ({ purchaseId: propPurchaseId }) => {
   const { purchaseId: routePurchaseId } = useParams();
   const purchaseId = propPurchaseId || routePurchaseId;
-
   const [inwardStocks, setInwardStocks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -46,11 +45,9 @@ const InwardStock = ({ purchaseId: propPurchaseId }) => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchInwardStocks();
   }, [purchaseId]);
-
   const deleteStock = async (Id) => {
     if (window.confirm("Are you sure you want to delete this stock?")) {
       try {
@@ -93,7 +90,6 @@ const InwardStock = ({ purchaseId: propPurchaseId }) => {
       console.error("Error fetching stock details:", error);
     }
   };
-
   const handleNewInsert = () => {
     setStockId(0);
     setInitialValue({
@@ -131,13 +127,12 @@ const InwardStock = ({ purchaseId: propPurchaseId }) => {
           <Column field="purchaseDate" header="Purchase Date" body={(rowData) => formatDate(rowData.purchaseDate)} />
           <Column body={AddressTemplate} header="Quantity" />
           <Column field="cost" header="Cost" body={(data) => `₹ ${data.cost.toLocaleString('en-IN')}`} />
-          <Column field="recivedDate" header="Received Date" body={(rowData) => formatDate(rowData.purchaseDate)} />
+          <Column field="recivedDate" header="Invoice Date" body={(rowData) => formatDate(rowData.recivedDate)} />
           <Column field="note" header="Note" />
           <Column field="staffname" header="Staff Name" />
           <Column body={(rowData) => (
             <>
               <i onClick={() => deleteStock(rowData.stockId)} className="fa-solid fa-trash text-danger" style={{ marginRight: "10px" }} ></i>
-
               <i onClick={() => fetchStockDetail(rowData.stockId)} className="fa-solid fa-pen-to-square text-success"></i>
             </>
           )} />

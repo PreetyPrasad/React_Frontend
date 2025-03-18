@@ -208,15 +208,37 @@ export default function Sidebar(props) {
                 </ul>
               </div>
             </li>{" "}
+            <Link className="nav-link menu-link" to="/TransactionYearMaster">
+              <i class="fas fa-history" /> <span>TransactionYear</span>
+            </Link>
+            <Link className="nav-link menu-link" to="/StaffMaster">
+              <i class="fas fa-user-tie" /> <span>StaffMaster</span>
+            </Link>
             <li className="nav-item">
-              <Link to="/Category" className="nav-link"> <i className="fas fa-th-large" style={{ marginRight: 5 }} /> <span data-key="t-landing">Category</span> </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/Material" className="nav-link"><i className="fa fa-cart-plus" style={{ marginRight: 5 }} /><span data-key="t-landing">Material</span> </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/Supplier" className="nav-link"><i className="fa-solid fa-users" style={{ marginRight: 5 }} /><span data-key="t-landing">Supplier</span> </Link>
-            </li>
+              <a
+                className="nav-link menu-link"
+                href="#Material"
+                data-bs-toggle="collapse"
+                role="button"
+                aria-expanded="false"
+                aria-controls="Material"
+              >
+                <i className="fas fa-box-open me-2"></i>
+                <span data-key="t-landing">Material</span>
+              </a>
+              <div className="collapse menu-dropdown" id="Material">
+                <ul className="nav nav-sm flex-column">
+                  <li className="nav-item">
+                    <Link className="nav-link menu-link" to="/Category">
+                      <i class="fas fa-box" /> <span>Category</span>
+                    </Link>
+                    <Link className="nav-link menu-link" to="/Material">
+                      <i className="fas fa-box-open me-2" /> <span>Material</span>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </li>{" "}
             <li className="nav-item">
               <a
                 className="nav-link menu-link"
@@ -226,51 +248,66 @@ export default function Sidebar(props) {
                 aria-expanded="false"
                 aria-controls="sidebarLanding"
               >
-                <i className="fa fa-wallet" />
+                <i className="fas fa-wallet me-2"></i>
                 <span data-key="t-landing">Purchase</span>
               </a>
               <div className="collapse menu-dropdown" id="sidebarLanding">
                 <ul className="nav nav-sm flex-column">
                   <li className="nav-item">
-                    <Link to="/PurchaseMaster" className="nav-link"><span data-key="t-landing">Purchase</span></Link>
+                    <Link className="nav-link menu-link" to="/Supplier">
+                      <i class="fas fa-handshake" /> <span>Supplier</span>
+                    </Link>
+                    <Link to="/PurchaseMaster" className="nav-link">
+                      <i className="fas fa-wallet me-2"></i>
+                      <span>Purchase</span>
+                    </Link>
+
+                    <li className="nav-item">
+                      <Link to="/PurchaseReturn" className="nav-link">
+                        <i className="fas fa-undo-alt me-2"></i>
+                        <span data-key="t-landing">PurchaseReturn</span>
+                      </Link>
+                    </li>
                   </li>
                 </ul>
               </div>
               <div className="collapse menu-dropdown" id="sidebarLanding">
                 <ul className="nav nav-sm flex-column">
-                  <li className="nav-item">
-                    <Link to="/PurchaseReturn" className="nav-link"><span data-key="t-landing">PurchaseReturn</span></Link>
-                  </li>
                 </ul>
               </div>
             </li>
-
             <li className="nav-item">
               <a
                 className="nav-link menu-link"
-                href="#sidebarUI"
+                href="#Invoices"
                 data-bs-toggle="collapse"
                 role="button"
                 aria-expanded="false"
-                aria-controls="sidebarUI"
+                aria-controls="Invoices"
               >
-                <i className="ri-pencil-ruler-2-line" />{" "}
+                <i className="fas fa-file-invoice me-2"></i>
                 <span data-key="t-base-ui">Invoice</span>
               </a>
-              <div
-                className="collapse menu-dropdown mega-dropdown-menu"
-                id="sidebarUI"
-              >
-                <div className="row">
-                  <div className="col-lg-4">
-                    <ul className="nav nav-sm flex-column">
-                      {/* <li className="nav-item"> */}
-                        {/* <Link to="/InvoiceMaster" className="nav-link"><span data-key="t-landing">Stock</span></Link> */}
-                      {/* </li> */}
-                    </ul>
-                  </div>
-                </div>
+              <div className="collapse menu-dropdown" id="Invoices">
+                <ul className="nav nav-sm flex-column">
+                  <li className="nav-item">
+                    <Link className="nav-link menu-link" to="/InvoiceMaster">
+                      <i className="fas fa-file-invoice" /> <span>InvoiceMaster</span>
+                    </Link>
+                    {/* <Link className="nav-link menu-link" to="/InvoiceDetail"> */}
+                    {/* <i class="fas fa-receipt" /> <span>InvoiceDetail</span> */}
+                    {/* </Link> */}
+                  </li>
+                  <li className="nav-item">
+                  </li>
+                </ul>
               </div>
+              {/* <Link className="nav-link menu-link" to="/StaffMaster"> */}
+              {/* <i class="fas fa-user-tie" /> <span>StaffMaster</span> */}
+              {/* </Link> */}
+              {/* <Link className="nav-link menu-link" to="/TransactionYearMaster"> */}
+              {/* <i class="fas fa-history" /> <span>TransactionYear</span> */}
+              {/* </Link> */}
             </li>
           </ul>
         </div>

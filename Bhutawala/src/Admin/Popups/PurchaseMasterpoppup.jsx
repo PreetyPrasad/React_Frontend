@@ -154,7 +154,15 @@ export default function PurchaseMasterpoppup(props) {
 
                     <div className="col-md-4 mb-2">
                       <b>PurchaseDate</b> <span className='text-danger'>*{errors.PurchaseDate}</span>
-                      <input type="Date" value={values.PurchaseDate} onChange={handleChange} onBlur={handleBlur} id='PurchaseDate' name='PurchaseDate' className='form-control' placeholder='PurchaseDate' />
+                      <input type="Date" value={values.Dj} max={new Date().toISOString().split("T")[0]} onChange={handleChange} onBlur={(e) => {
+                        const selectedDate = new Date(e.target.value);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        if (selectedDate > today) {
+                          alert("Date of Joining cannot be a future date.");
+                          setFieldValue('Dj', '');
+                        }
+                      }} id='Dj' name='Dj' className='form-control' placeholder='Date Of Joining    ' />
                     </div>
                     <div className="col-md-4 mb-2">
                       <b>GST Type</b> <span className='text-danger'>*{errors.GST_Type}</span>

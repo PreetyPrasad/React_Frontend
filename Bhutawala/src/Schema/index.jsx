@@ -1,42 +1,33 @@
 import * as Yup from "yup";
-
-export const categoriesSchema = Yup.object().shape({
-  Category: Yup.string()
-    .min(3, "Category name is too short!")
-    .max(50, "Category name is too long!")
-    .required("Category name is required"),
+export const CategorySchema = Yup.object().shape({
+  CategoryName: Yup.string().required("Required")
 });
-
-
-export const TransactionYearMasterSchema = Yup.object().shape({
-  YearName: Yup.string()
-    .min(3, "Year name is too short!")
-    .max(20, "Year name cannot exceed 20 characters")  // Matching the C# validation
-    .required("Year name is required"),
+export const TransactionYearSchema = Yup.object().shape({
+  YearName: Yup.string().required("Required")
 });
-
 
 export const SalesReturnSchema = Yup.object({
   Paymentmode: Yup.string().min(2).max(25).required("Paymentmode is required"),
   RefNo: Yup.string().min(2).max(25).required("RefNo is required"),
   ReturnDate: Yup.string().min(2).max(25).required("ReturnDate is required"),
-  StaffId: Yup.string().min(2).max(25).required("StaffId is required"),
+  StaffId: Yup.string().min(2).max(25).required("required"),
 });
-// Validation Schema
+
+
 export const MaterialSchema = Yup.object({
-  CategoryId: Yup.string().required("Category is required"),
-  Unit: Yup.string().required("Unit is required"),
+  CategoryId: Yup.string().required(" required"),
+  Unit: Yup.string().required(" required"),
   Qty: Yup.number()
     .positive("Quantity must be positive")
-    .required("Quantity is required"),
+    .required("required"),
   Net_Qty: Yup.number()
     .positive("Net Quantity must be positive")
-    .required("Net Quantity is required"),
-  Brand: Yup.string().required("Brand is required"),
+    .required(" required"),
+  Brand: Yup.string().required("required"),
   GST: Yup.number()
     .min(0, "GST cannot be negative")
-    .required("GST is required"),
-  GST_Type: Yup.string().required("GST Type is required"),
+    .required(" required"),
+  GST_Type: Yup.string().required(" required"),
 });
 
 export const SupplierSchema = Yup.object().shape({
@@ -60,83 +51,67 @@ export const PurchaseMasterSchema = Yup.object({
   //  SupplierId: Yup.number().nullable().notRequired(),  // Nullable as SupplierId can be null in your model
   //  TransactionYearId: Yup.number().nullable().notRequired(), // Nullable for the same reason
   GrossTotal: Yup.number()
-    .required("Gross Total is required.")
+    .required(" required.")
     .min(0, "Gross Total must be non-negative."),
   GST: Yup.number()
-    .required("GST  is required.")
+    .required(" required.")
     .min(0, "GST  must be non-negative."),
   GST_Type: Yup.string()
     .max(50, "GST Type cannot exceed 50 characters.")
     .nullable(),  // Optional field
   Total: Yup.number()
-    .required("Total is required.")
+    .required(" required.")
     .min(0, "Total must be non-negative."),
-  PurchaseDate: Yup.date().required("Purchase Date is required."),
+  PurchaseDate: Yup.date().required(" required."),
   BillNo: Yup.string()
     .max(100, "Bill Number cannot exceed 100 characters.")
     .nullable(),  // Optional field
-  NoticePeriod: Yup.date().required("Notice Period is required."),
+  NoticePeriod: Yup.date().required(" required."),
   Note: Yup.string()
     .max(200, "Note cannot exceed 200 characters.")
     .nullable(),  // Optional field
 });
 export const StaffMasterSchema = Yup.object({
   FullName: Yup.string()
-    .matches(/^[a-zA-Z\s]+$/, "Only letters and spaces allowed.")
-    .required("Full name is required")
-    .max(100, "Full name cannot be longer than 100 characters"),
-
-  Address: Yup.string()
-    .required("Address is required")
-    .max(200, "Address cannot be longer than 200 characters"),
-
-  Category: Yup.string().required("Category is required"),
-
-  Qualification: Yup.string()
-    .required("Qualification is required")
-    .max(100, "Qualification cannot be longer than 100 characters"),
-
+    .matches(/^[a-zA-Z\s]+$/, "Only alphabets are allowed")
+    .required(" required"),
+  Address: Yup.string().required(" required"),
+  ContactNo: Yup.string()
+    .matches(/^[0-9]{10}$/, "Contact number must be 10 digits")
+    .required(" required"),
+  Category: Yup.string().required("required"),
+  Qualification: Yup.string().required("required"),
   AdharNo: Yup.string()
-    .matches(/^\d{12}$/, "Must be 12 digits.")
-    .required("Aadhar number is required"),
-
+    .matches(/^[0-9]{12}$/, "Aadhar number must be 12 digits")
+    .required(" required"),
   Age: Yup.number()
-    .min(18, "Age must be at least 18")
-    .max(65, "Age must be at most 65")
+    .positive("Age must be a positive number")
+    .integer("Age must be an integer")
+    .min(18, "Minimum age is 18")
+    .max(100, "Maximum age is 100")
     .required("Age is required"),
-
-  Dj: Yup.string().required("Joining date is required"),
-
-  Email: Yup.string()
-    .email("Invalid Email.")
-    .required("Email is required"),
-
-  Password: Yup.string()
-    .required("Password is required")
-    .min(6, "Password must be at least 6 characters")
-    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .matches(/\d/, "Password must contain at least one number")
-    .matches(/[\W_]/, "Password must contain at least one special character"),
+  Dj: Yup.date().required(" required"),
+  Email: Yup.string().email("Invalid email").required("required"),
 });
 export const InvoiceValidationSchema = Yup.object({
   InvoiceNo: Yup.number()
-    .required('Invoice Number is required.')
+    .required('required.')
     .integer('Invoice Number must be an integer.'),
 
   CustomerName: Yup.string()
-    .required('Customer Name is required.')
+    .required('required.')
     .max(100, 'Customer Name cannot exceed 100 characters.'),
 
   ContactNo: Yup.string()
     .matches(/^[6-9]\d{9}$/, 'Invalid Contact Number.')
-    .required('Contact Number is required.'),
+    .required('required.'),
 
   TotalGross: Yup.number()
-    .required('Total Gross is required.')
+    .required('required.')
     .min(0, 'Total Gross must be non-negative.'),
 
   GST: Yup.number()
-    .required('GST is required.')
+    .required('required.')
     .min(0, 'GST must be at least 0%.')
     .max(100, 'GST cannot exceed 100%.'),
 
@@ -145,11 +120,11 @@ export const InvoiceValidationSchema = Yup.object({
     .nullable(),
 
   Total: Yup.number()
-    .required('Total is required.')
+    .required('required.')
     .min(0, 'Total must be non-negative.'),
 
   InvoiceDate: Yup.date()
-    .required('Invoice Date is required.')
+    .required(' required.')
     .max(new Date(), 'Invoice Date cannot be in the future.'),
 
   NoticePeriod: Yup.date()
@@ -163,10 +138,10 @@ export const InvoiceValidationSchema = Yup.object({
   TransactionYearId: Yup.number().nullable(),
 });
 export const InwordStockSchema = Yup.object({
-  MaterialId: Yup.number().nullable().required("Material is required."),
-  PurchaseId: Yup.number().nullable().required("Purchase is required."),
+  MaterialId: Yup.number().nullable().required(" required."),
+  PurchaseId: Yup.number().nullable().required("required."),
   Qty: Yup.number()
-    .required("Quantity is required.")
+    .required("required.")
     .positive("Quantity must be greater than zero.")
     .min(0.01, "Quantity must be greater than zero."),
   Unit: Yup.string()
@@ -180,7 +155,7 @@ export const InwordStockSchema = Yup.object({
   Note: Yup.string()
     .max(200, "Note cannot exceed 200 characters.")
     .nullable(),
-  StaffId: Yup.number().required("Staff ID is required."),
+  StaffId: Yup.number().required(" required."),
 });
 export const PurchaseReturnSchema = Yup.object().shape({
   // PurchaseId: Yup.number().nullable(), // Can be null
@@ -188,55 +163,55 @@ export const PurchaseReturnSchema = Yup.object().shape({
 
   Qty: Yup.number()
     .min(0.01, "Quantity must be greater than zero.")
-    .required("Quantity is required."),
+    .required(" required."),
 
   Unit: Yup.string()
     .max(50, "Unit cannot exceed 50 characters.")
-    .required("Unit is required."),
+    .required(" required."),
 
   Total: Yup.number()
     .min(0.01, "Total must be greater than zero.")
-    .required("Total is required."),
+    .required("required."),
 
   ReturnDate: Yup.date()
-    .required("Return date is required.")
+    .required(" required.")
 });
 
 export const InvoiceDetailSchema = Yup.object().shape({
   Rate: Yup.number()
-    .required("Rate is required")
+    .required(" required")
     .min(0, "Rate must be non-negative"),
 
   Qty: Yup.number()
-    .required("Quantity is required")
+    .required(" required")
     .min(0, "Quantity must be non-negative"),
 
   Unit: Yup.string()
-    .required("Unit is required")
+    .required(" required")
     .max(50, "Unit cannot exceed 50 characters"),
 
   GSTAmount: Yup.number()
-    .required("GST Amount is required")
+    .required(" required")
     .min(0, "GST Amount must be non-negative"),
 
   Total: Yup.number()
-    .required("Total is required")
+    .required("required")
     .min(0, "Total must be non-negative"),
 });
 export const purchasePaymentSchema = Yup.object({
 
   // Amount: Yup.number()
-    // .required('Amount is required')
-    // .required("Amount is required"),
+  // .required('Amount is required')
+  // .required("Amount is required"),
 
-  PaymentMode: Yup.string().required('Payment Mode is required'),
-  PaymentDate: Yup.date().required('Payment Date is required'),
+  PaymentMode: Yup.string().required('required'),
+  PaymentDate: Yup.date().required(' required'),
 });
 export const DebitSchema = Yup.object({
   amount: Yup.number()
     .min(0.01, "Amount must be greater than zero")
-    .required("Amount is required"),
-  noteDate: Yup.date().required("Note date is required"),
+    .required("required"),
+  noteDate: Yup.date().required("required"),
 });
 export const InvoiceSchema = Yup.object().shape({
   transactionYearId: Yup.string().required("Required"),
@@ -252,3 +227,99 @@ export const InvoiceSchema = Yup.object().shape({
   invoiceDate: Yup.date().required("Required"),
   gstin: Yup.string().required("Required"),
 });
+export const ResetPasswordSchema = Yup.object().shape({
+  oldPasswd: Yup.string()
+    .required("Old password is required"),
+
+  newPasswd: Yup.string()
+    .min(6, "Password must be at least 6 characters") // Matches MinLength(6),
+    .required("New password is required"),
+
+  Password: Yup.string()
+    .oneOf([Yup.ref("newPasswd"), null], "Passwords must match")
+    .required("Confirm password is required")
+});
+export const LogInSchema = Yup.object().shape({
+  UserName: Yup.string().required("Required"),
+  Password: Yup.string().required("Required")
+});
+export const ForgetPaswordSchema = Yup.object().shape({
+  UserName: Yup.string()
+    .matches(/^[a-zA-Z\s]+$/, "Only alphabets are allowed")
+    .required("Full Name is required")
+});
+export const InvoiceMasterSchema = Yup.object().shape({
+  InvoiceId: Yup.string().required(" required"),
+  StaffId: Yup.string().required(" required"),
+  TransactionYearId: Yup.string().required(" required"),
+  InvoiceNo: Yup.string().required(" required"),
+  CustomerName: Yup.string()
+    .min(3, "Customer Name must be at least 3 characters")
+    .required(" required"),
+  ContactNo: Yup.string()
+    .matches(/^[0-9]{10}$/, "Contact Number must be 10 digits")
+    .required(" required"),
+  TotalGross: Yup.number()
+    .positive("Total Gross must be positive")
+    .required(" required"),
+  GST: Yup.number()
+    .min(0, "GST cannot be negative")
+    .required(" required"),
+  GST_Type: Yup.string()
+    .oneOf(["inclusive", "exclusive"], "GST_Type must be 'inclusive' or 'exclusive'")
+    .required(" required"),
+  Total: Yup.number()
+    .positive("Total must be positive")
+    .required(" required"),
+  InvoiceDate: Yup.date()
+    .typeError("Invalid date format")
+    .required(" required"),
+  NoticePeriod: Yup.number()
+    .min(0, "Notice Period cannot be negative")
+    .optional(),
+  GSTIN: Yup.string()
+    .matches(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/, "Invalid GSTIN format")
+    .required(" required"),
+});
+export const DetailSchema = Yup.object().shape({
+  MaterialId: Yup.string()
+    .required(" required"),
+  Total: Yup.number()
+    .required(" required"),
+
+  Qty: Yup.number()
+    .typeError("Quantity must be a number")
+    .positive("Quantity must be greater than 0")
+    .required(" required"),
+
+  Price: Yup.number()
+    .typeError("Price must be a number")
+    .positive("Price must be greater than 0")
+    .required(" required")
+});
+
+// const PurchaseReturnSchema = Yup.object({
+// purchaseId: Yup.number().required("Purchase ID is required"),
+// invoiceId: Yup.number().required("Invoice ID is required"),
+// qty: Yup.number()
+// .min(0.01, "Quantity must be greater than zero.")
+// .required("Quantity is required"),
+// unit: Yup.string()
+// .max(50, "Unit cannot exceed 50 characters")
+// .required("Unit is required"),
+// total: Yup.number()
+// .min(0.01, "Total must be greater than zero.")
+// .required("Total is required"),
+// returnDate: Yup.date().required("Return date is required"),
+// });
+//
+// 
+
+
+
+
+
+
+
+
+

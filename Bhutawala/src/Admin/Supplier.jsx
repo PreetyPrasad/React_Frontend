@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { getData } from '../API';
+import { getData, postData } from '../API';
 import SupplierPopup from './Popups/SupplierPopup'
-
+import { confirmationAlert, errorAlert, successAlert } from '../SweetAlert/SuccessAlert';
+import { FilterMatchMode } from 'primereact/api';
 
 export default function Supplier() {
   const [Suppliers, setSuppliers] = useState([]);
@@ -11,6 +12,23 @@ export default function Supplier() {
   const [loading, setLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
   const [SupplierId, setSupplierId] = useState(0);
+  const [globalFilterValue, setGlobalFilterValue] = useState('');
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    businessName: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    pinCode: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    bankName: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    contactNo: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    city: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    state: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  })
+  const onGlobalFilterChange = (e) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
+    _filters['global'].value = value;
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+  };
   const [initialValue, setInitialValue] = useState({
     SupplierId: "",
     BusinessName: "",
@@ -26,11 +44,12 @@ export default function Supplier() {
     IFSC: "",
     AccountNo: "",
     BankName: "",
+    // LogDate: "",
     Email: "",
   });
-
   const fetchSuppliers = async () => {
     try {
+      setDataLoading(true);
       const response = await getData("Supplier/List");
       console.log(response)
       if (response.status.toUpperCase() == "OK") {
@@ -40,14 +59,17 @@ export default function Supplier() {
         console.log("Something went wrong");
       }
     } catch (error) {
-      console.error("Error fetching data in component:", error);
+      errorAlert("Error fetching data in component:", error);
+    }
+    finally {
+      setDataLoading(false);
     }
   };
 
   const deleteSuppliers = async (Id) => {
     if (window.confirm("Are you sure to delete...?")) {
       try {
-       
+
         const response = await getData("Supplier/Remove/" + Id);
         if (response.status.toUpperCase() == "OK") {
           fetchSuppliers();
@@ -59,12 +81,13 @@ export default function Supplier() {
       }
     }
   }
+
   const fetchSupplierDetail = async (Id) => {
     try {
       const response = await getData("Supplier/Details/" + Id);
       if (response.status.toUpperCase() == "OK") {
         setInitialValue({
-          SupplierId: response.result.supplierId,
+
           BusinessName: response.result.businessName,
           ContactPerson: response.result.contactPerson,
           ContactNo: response.result.contactNo,
@@ -79,25 +102,30 @@ export default function Supplier() {
           AccountNo: response.result.accountNo,
           BankName: response.result.bankName,
           Email: response.result.email
+
         });
-        setSupplierId(response.result.SupplierId);
+        setSupplierId(response.result.supplierId);
+
         setShow(true);
       } else {
         console.log("Something went wrong");
       }
     } catch (error) {
-      console.error("Error fetching data in component:", error);
+      errorAlert("Error fetching data in component:", error);
     }
   };
 
-  const AddressTemplate = (supplier) => {
-    return `${supplier.address} ${supplier.city} ${supplier.state} ${supplier.pinCode}`
+  const AddressDetailTemplate = (supplier) => {
+    return <> {supplier.address} <br />{supplier.city}, {supplier.state} <br />{supplier.pinCode}</>
+  }
+  const BankDetailTemplate = (supplier) => {
+    return <> {supplier.bankName}, {supplier.ifsc} <br />{supplier.accountNo} </>
   };
-  const EmailTemplate = (supplier) => {
-    return `${supplier.contactNo} ${supplier.email}`
+  const ContactDetailTemplate = (supplier) => {
+    return <> {supplier.banckBranch} <br /> {supplier.email}</>
   };
-  const BankTemplate = (supplier) => {
-    return `${supplier.banckBranch} ${supplier.bankName}${supplier.ifsc} ${supplier.accountNo}`
+  const ContactNoTemplate = (supplier) => {
+    return <>{supplier.businessName} <br />{supplier.contactNo} </>
   };
   const editTemplate = (supplier) => {
     return <i onClick={() => fetchSupplierDetail(supplier.supplierId)} className='fas fa-edit  text-success'></i>;
@@ -105,34 +133,37 @@ export default function Supplier() {
   const deleteTemplate = (supplier) => {
     return <i onClick={() => deleteSuppliers(supplier.supplierId)} className='fas fa-trash text-danger'></i>;
   };
-
   useEffect(() => {
     fetchSuppliers();
   }, []);
-
-
   return (
     <div className="container-fluid" jstcache={0}>
       <div className="row" jstcache={0}>
         <div className="col-lg-12">
           <div className="card">
-            <div className="card-header"> <h4 className="card-title mb-0">Supplier List</h4> </div>
+            <div className="card-header">
+              <h4 className="card-title mb-0">Suppliers</h4>
+            </div>
             <div className="card-body">
               <div className="row">
-                <div className="col-md-12 mb-2">
-                  <button type="button" id='openPopup' onClick={() => setShow(true)} className="open-modal-btn">Add Supplier</button>
+                <div className="col-md-8 mb-2">
+                  <button type="button" id='openPopup' onClick={() => setShow(true)} className="open-modal-btn"> Add Supplier</button>
                   <SupplierPopup fetchSuppliers={fetchSuppliers} SupplierId={SupplierId} setSupplierId={setSupplierId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} />
                 </div>
+                <div className='col-md-4 mb-2'>
+                  <div className="input-group">
+                    <input type="text" className="form-control" value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Search" />
+                    <span className="input-group-text"> <i className="fas fa-search"></i></span>
+                  </div>
+                </div>
                 <div className="col-md-12 table-responsive">
-                  <DataTable showGridlines size='small' loading={dataLoading} value={Suppliers} tableStyle={{ minWidth: '50rem' }}>
-                    <Column field="supplierId" header="#"></Column>
-                    <Column field="businessName" header="BusinessName" sortable></Column>
-                    <Column field="contactPerson" header="ContactPerson" sortable></Column>
-                    <Column body={AddressTemplate} header="Address" sortable></Column>
-                    <Column field="gstin" header="GSTIN " sortable></Column>
-                    <Column field="pan" header="pan" sortable></Column>
-                    <Column body={BankTemplate} header="Bank " sortable></Column>
-                    <Column body={EmailTemplate} header="email" sortable></Column>
+                  <DataTable showGridlines filters={filters} globalFilterFields={['businessName', 'pinCode', 'contactNo', 'bankName', 'city', 'state',]} size='small' stripedRows paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '10rem' }} loading={dataLoading} value={Suppliers}>
+                    <Column body={ContactNoTemplate} header="Business Name " sortable></Column>
+                    <Column body={ContactDetailTemplate} header="ContactDetail" sortable></Column>
+                    <Column body={AddressDetailTemplate} header="AddressDetail"></Column>
+                    <Column field="gstin" header="GSTIN "></Column>
+                    <Column field="pan" header="PAN"></Column>
+                    <Column body={BankDetailTemplate} header="BankDetail" sortable></Column>
                     <Column body={editTemplate} className='text-center' style={{ width: "50px" }}></Column>
                     <Column body={deleteTemplate} className='text-center' style={{ width: "50px" }}></Column>
                   </DataTable>

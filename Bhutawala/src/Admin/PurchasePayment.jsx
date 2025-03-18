@@ -3,7 +3,7 @@ import { getData } from "../API";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import PaymentPopup from "./Popups/PaymentPopup";
-
+import PurchaseDetails from "./Details/PurchaseDetails";
 export default function PurchasePayment({ purchaseId, fetchPaymentDetails, remainingAmount }) {
   const [show, setShow] = useState(false);
   const [purchasePayments, setPurchasePayments] = useState([]);
@@ -81,7 +81,6 @@ export default function PurchasePayment({ purchaseId, fetchPaymentDetails, remai
           fetchPurchasePayments={fetchPurchasePayments} PaymentId={PaymentId} setPaymentId={setPaymentId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} fetchPaymentDetails={fetchPaymentDetails} remain={remainingAmount}
         />
       </div>
-
       {loading ? (
         <div className="d-flex justify-content-center">
           <span>Loading...</span>
@@ -92,7 +91,6 @@ export default function PurchasePayment({ purchaseId, fetchPaymentDetails, remai
         <p className="text-muted text-center">No payment records found.</p>
       ) : (
         <DataTable value={purchasePayments} paginator rows={5} rowsPerPageOptions={[5, 10, 25]}>
-          <Column field="paymentId" header="#" sortable />
           <Column field="amount" header="Amount" sortable />
           <Column field="paymentMode" header="Payment Mode" />
           <Column field="refNo" header="Reference No" />

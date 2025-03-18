@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React, { createContext, useState } from "react";
 import Category from "./Admin/Category";
 import Material from "./Admin/Material";
-import CreditNote from "./Admin/CreditNote";
 import Demo from "./Demo";
 import Supplier from "./Admin/Supplier";
 import TransactionYearMaster from "./Admin/TransactionYearMaster";
@@ -12,11 +11,19 @@ import "primereact/resources/themes/lara-light-cyan/theme.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import InvoiceMaster from "./Admin/InvoiceMaster";
 import PurchaseReturn from "./Admin/PurchaseReturn";
-import InvoiceDetail from "./Admin/InvoiceDetail";
+// import InvoiceDetail from "./Admin/InvoiceDetail";
 import PurchasePayment from "./Admin/PurchasePayment";
 import 'primeicons/primeicons.css';
 import PurchaseDetails from "./Admin/Details/PurchaseDetails";
-import DebitNote from "./Admin/DebitNote";
+import LogIn from "./Admin/LogIn";
+import ResetPassword from "./Admin/ResetPassword";
+import InwardStock from "./Admin/InwordStock";
+import LogOut from "./Admin/LogOut";
+import CreatePassword from "./Admin/CreatePassword";
+import ForgetPassword from "./Admin/ForgetPassword";
+import Profile from "./Admin/Profile";
+import "./Admin/Style.css";
+
 function App() {
   return (
     <BrowserRouter>
@@ -28,12 +35,17 @@ function App() {
         <Route path="/PurchaseMaster" element={<Demo Component={<PurchaseMaster />} />} />
         <Route path="/StaffMaster" element={<Demo Component={<StaffMaster />} />} />
         <Route path="/InvoiceMaster" element={<Demo Component={<InvoiceMaster />} />} />
-      
         <Route path="/PurchaseReturn" element={<Demo Component={<PurchaseReturn />} />} />
-        <Route path="/InvoiceDetail" element={<Demo Component={<InvoiceDetail />} />} />
+        {/* <Route path="/InvoiceDetail" element={<Demo Component={<InvoiceDetail />} />} /> */}
         <Route path="/PurchasePayment" element={<Demo Component={<PurchasePayment />} />} />
-        <Route path="/" element={<Demo Component={<DebitNote />} />} />
         <Route path="/Purchase/Details/:id" element={<Demo Component={<PurchaseDetails />} />} />
+        <Route path="/" element={[<LogIn />]} />
+        <Route path="/ResetPassword" element={[<ResetPassword />]} />
+        <Route path="/InwardStock" element={[<InwardStock />]} />
+        <Route path="/LogOut" element={[<LogOut />]} />
+        <Route path="/CreatePassword" element={[<CreatePassword />]} />
+        <Route path="/ForgetPassword" element={[<ForgetPassword />]} />
+        <Route path="/Profile" element={[<Demo Component={<Profile />} />]} />
       </Routes>
     </BrowserRouter>
   );
