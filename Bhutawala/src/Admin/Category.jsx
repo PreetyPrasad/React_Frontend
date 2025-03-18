@@ -11,7 +11,7 @@ export default function Category() {
   const [category, setCategorys] = useState([]);
   const [CategoryId, setCategoryId] = useState(0);
   const [initialValue, setInitalValue] = useState({
-    YearName: ""
+    CategoryName: ""
   });
   const { handleBlur, handleChange, handleSubmit, errors, values } = useFormik({
     initialValues: initialValue,
@@ -22,7 +22,6 @@ export default function Category() {
         "CategoryName": values.CategoryName,
         "CategoryId": CategoryId
       };
-
       try {
         setLoading(true);
         const result = await postData(
@@ -81,7 +80,8 @@ export default function Category() {
       console.error("Error fetching data in component:", error);
     }
   }
-  const deleteTransactionYear = async (Id) => {
+
+  const deleteCategory = async (Id) => {
     if (window.confirm("Are you sure to delete...?")) {
       try {
         setDataLoading(true);
@@ -106,10 +106,10 @@ export default function Category() {
     setCategoryId(0);
   }
   const deleteTemplate = (category) => {
-    return <i onClick={() => deleteTransactionYear(category.categoryId)} className='fas fa-trash text-danger'></i>;
+    return <i onClick={() => deleteCategory(category.categoryId)} className='fas fa-trash text-danger'></i>;
   };
   const editTemplate = (category) => {
-    return <i onClick={() => fetchTransactionYearDetail(category.categoryId)} className='fas fa-edit text-success '></i>;
+    return <i onClick={() => fetchCategoryDetail(category.categoryId)} className='fas fa-edit text-success '></i>;
   };
   useEffect(() => {
     fetchCategorys();

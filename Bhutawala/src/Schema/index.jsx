@@ -183,8 +183,8 @@ export const InwordStockSchema = Yup.object({
   StaffId: Yup.number().required("Staff ID is required."),
 });
 export const PurchaseReturnSchema = Yup.object().shape({
-  PurchaseId: Yup.number().nullable(), // Can be null
-  InvoiceId: Yup.number().nullable(), // Can be null
+  // PurchaseId: Yup.number().nullable(), // Can be null
+  // InvoiceId: Yup.number().nullable(), // Can be null
 
   Qty: Yup.number()
     .min(0.01, "Quantity must be greater than zero.")
