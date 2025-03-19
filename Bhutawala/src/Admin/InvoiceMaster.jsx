@@ -415,10 +415,10 @@ export default function InvoiceMaster() {
                       />
                     </div>
                     <div className="col-md-12 mt-2 text-danger">
-                      <button type="button" className="btn btn-primary btn-lg"
+                      {/* <button type="button" className="btn btn-primary btn-lg"
                         onClick={() => generatePDF(InvoiceNo)} disabled={loading}>
                         {loading ? "Processing..." : "Generate PDF"}
-                      </button>
+                      </button>*/}
 
                       {/* <button type="submit" className="btn btn-primary btn-lg" disabled={loading}> */}
                       {/* {loading ? "Processing..." : "Generate Receipt"} */}
