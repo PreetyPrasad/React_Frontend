@@ -6,7 +6,7 @@ import { Column } from 'primereact/column';
 import DetailPopup from './Popups/DetailPopup';
 import { generatePDF } from './generatePDF ';
 import { confirmationAlert, errorAlert, successAlert, warningAlert } from '../SweetAlert/SuccessAlert';
-import { InvoiceSchema } from '../Staff/Schema';
+import { InvoiceSchema } from '../Staff/Schema/index';
 import { useFormik } from 'formik';
 
 export default function InvoiceMaster() {
@@ -348,7 +348,7 @@ export default function InvoiceMaster() {
                   <div className="row">
                     <div className="col-md-3 mb-2">
                       <strong>Amount</strong>
-                      <span className='text-danger'>*{errors.paymentAmount}</span>
+                      <span className='text-danger'>*</span>
                       <input
                         type='text'
                         className='form-control'
@@ -359,7 +359,7 @@ export default function InvoiceMaster() {
                     </div>
                     <div className="col-md-3 mb-2">
                       <strong>Payment Mode</strong>
-                      <span className='text-danger'>*{errors.paymentMode}</span>
+                      <span className='text-danger'>*</span>
                       <select
                         className='form-select'
                         value={paymentMode}
@@ -372,7 +372,7 @@ export default function InvoiceMaster() {
                     </div>
                     <div className="col-md-3 mb-2 ">
                       <strong>Ref No.</strong>
-                      <span className='text-danger'>{errors.RefNo}</span>
+                      <span className='text-danger'></span>
                       <input
                         type='text'
                         className='form-control'
@@ -390,7 +390,7 @@ export default function InvoiceMaster() {
                     </div>
                     <div className="col-md-3 mb-2">
                       <strong>GST TYPE</strong>
-                      <span className='text-danger'>*{errors.GST_Type}</span>
+                      <span className='text-danger'>*</span>
                       <select
                         className='form-select'
                         value={values.GST_Type}
@@ -403,7 +403,7 @@ export default function InvoiceMaster() {
                     </div>
                     <div className="col-md-3 mb-2">
                       <strong>Notice Period</strong>
-                      <span className='text-danger'>*{errors.NoticePeriod}</span>
+                      <span className='text-danger'>*</span>
                       <input
                         type='Date'
                         className='form-control'

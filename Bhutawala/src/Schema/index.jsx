@@ -1,4 +1,10 @@
 import * as Yup from "yup";
+
+export const LogInSchema = Yup.object().shape({
+    UserName: Yup.string().required("Required"),
+    Password: Yup.string().required("Required")
+});
+
 export const CategorySchema = Yup.object().shape({
   CategoryName: Yup.string().required("Required")
 });
@@ -232,16 +238,12 @@ export const ResetPasswordSchema = Yup.object().shape({
     .required("Old password is required"),
 
   newPasswd: Yup.string()
-    .min(6, "Password must be at least 6 characters") // Matches MinLength(6),
+    .min(6, "Password must be at least 6 characters") 
     .required("New password is required"),
 
   Password: Yup.string()
     .oneOf([Yup.ref("newPasswd"), null], "Passwords must match")
     .required("Confirm password is required")
-});
-export const LogInSchema = Yup.object().shape({
-  UserName: Yup.string().required("Required"),
-  Password: Yup.string().required("Required")
 });
 export const ForgetPaswordSchema = Yup.object().shape({
   UserName: Yup.string()
@@ -313,7 +315,17 @@ export const DetailSchema = Yup.object().shape({
 // returnDate: Yup.date().required("Return date is required"),
 // });
 //
-// 
+//
+
+export const OutwordSchema = Yup.object({
+  
+  Reason: Yup.string().required(' required'),
+  Givento: Yup.string().required(' required'),
+  ContactNo: Yup.string()
+    .matches(/^[0-9]{10}$/, ' 10 digits')
+    .required(' required'),
+ 
+});
 
 
 

@@ -15,6 +15,7 @@ import PurchaseReturn from "./Admin/PurchaseReturn";
 import PurchasePayment from "./Admin/PurchasePayment";
 import 'primeicons/primeicons.css';
 import PurchaseDetails from "./Admin/Details/PurchaseDetails";
+import OutwordMaster from "./Admin/OutwordMaster";
 import LogIn from "./Admin/LogIn";
 import ResetPassword from "./Admin/ResetPassword";
 import InwardStock from "./Admin/InwordStock";
@@ -22,6 +23,7 @@ import LogOut from "./Admin/LogOut";
 import CreatePassword from "./Admin/CreatePassword";
 import ForgetPassword from "./Admin/ForgetPassword";
 import Profile from "./Admin/Profile";
+
 import "./Admin/Style.css";
 
 function App() {
@@ -39,9 +41,10 @@ function App() {
         {/* <Route path="/InvoiceDetail" element={<Demo Component={<InvoiceDetail />} />} /> */}
         <Route path="/PurchasePayment" element={<Demo Component={<PurchasePayment />} />} />
         <Route path="/Purchase/Details/:id" element={<Demo Component={<PurchaseDetails />} />} />
+        <Route path="/InwardStock" element={[<InwardStock />]} />
+        <Route path="/OutwordMaster" element={<Demo Component={<OutwordMaster />} />} />
         <Route path="/" element={[<LogIn />]} />
         <Route path="/ResetPassword" element={[<ResetPassword />]} />
-        <Route path="/InwardStock" element={[<InwardStock />]} />
         <Route path="/LogOut" element={[<LogOut />]} />
         <Route path="/CreatePassword" element={[<CreatePassword />]} />
         <Route path="/ForgetPassword" element={[<ForgetPassword />]} />

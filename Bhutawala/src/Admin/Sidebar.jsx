@@ -294,17 +294,17 @@ export default function Sidebar(props) {
                     <Link className="nav-link menu-link" to="/InvoiceMaster">
                       <i className="fas fa-file-invoice" /> <span>InvoiceMaster</span>
                     </Link>
-                    {/* <Link className="nav-link menu-link" to="/InvoiceDetail"> */}
-                    {/* <i class="fas fa-receipt" /> <span>InvoiceDetail</span> */}
-                    {/* </Link> */}
+                    <Link className="nav-link menu-link" to="/InvoiceDetail">
+                      <i class="fas fa-receipt" /> <span>InvoiceDetail</span>
+                    </Link>
                   </li>
                   <li className="nav-item">
                   </li>
                 </ul>
               </div>
-              {/* <Link className="nav-link menu-link" to="/StaffMaster"> */}
-              {/* <i class="fas fa-user-tie" /> <span>StaffMaster</span> */}
-              {/* </Link> */}
+              <Link className="nav-link menu-link" to="/OutwordMaster">
+                <i class="fas fa-user-tie" /> <span>OutwordMaster</span>
+              </Link>
               {/* <Link className="nav-link menu-link" to="/TransactionYearMaster"> */}
               {/* <i class="fas fa-history" /> <span>TransactionYear</span> */}
               {/* </Link> */}

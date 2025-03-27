@@ -1,14 +1,14 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react'
 import { postData } from '../API';
-import { LogInSchema } from '../Staff/Schema';
+import { LogInSchema } from '../Schema';
 import { useNavigate } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 import { confirmationAlert, errorAlert, successAlert } from '../SweetAlert/SuccessAlert';
 
 export default function LogIn() {
-  const navigate = useNavigate();
+  const navigate = useNavigate();//Initialize to navigate
   const [initialValues, setinitialValues] = useState({
     UserName: (localStorage.getItem("AdminUserName") != null ? localStorage.getItem("AdminUserName") : ""),
     Password: (localStorage.getItem("AdminPasswd") != null ? localStorage.getItem("AdminPasswd") : "")
@@ -65,6 +65,7 @@ export default function LogIn() {
   return (
     <div className="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
       <div className="bg-overlay" />
+      {/* auth-page content */}
       <div className="auth-page-content overflow-hidden pt-lg-5">
         <div className="container">
           <div className="row">
@@ -155,7 +156,7 @@ export default function LogIn() {
                           </div>
                           <div className="mb-3">
                             <div className="float-end">
-                              <Link to="/ForgetPassword" className="text-muted">
+                              <Link to="/Admin/ForgetPassword" className="text-muted">
                                 Forgot password?
                               </Link>
                             </div>
@@ -232,7 +233,7 @@ export default function LogIn() {
               <div className="text-center">
                 <p className="mb-0">
                   © Bhutawala Traders. Crafted with <i className="mdi mdi-heart text-danger" />{" "}
-                  by Preety
+                  by Patel Zainab
                 </p>
               </div>
             </div>
