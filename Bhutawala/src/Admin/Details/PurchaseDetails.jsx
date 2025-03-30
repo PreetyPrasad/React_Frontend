@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getData } from "../../API";
 import PurchasePayment from "../PurchasePayment";
 import InwardStock from "../InwordStock";
-
+import { FileText, CreditCard, Package } from "lucide-react";
 export default function PurchaseDetails() {
   const { id } = useParams();
   const [purchaseDetail, setPurchaseDetail] = useState(null);
@@ -91,32 +91,44 @@ export default function PurchaseDetails() {
           <h1>Purchase Master</h1>
           <p>Remaining: <b>₹ {remainingAmount.toLocaleString('en-IN')}</b></p>
         </div>
-
         <div className="card">
           <div className="row">
             <div className="card-header p-0 border-bottom-0">
-              <ul className="nav nav-tabs" role="tablist">
+              <ul className="nav nav-tabs">
                 <li className="nav-item">
-                  <button className={`nav-link ${activeTab === "details" ? "active" : ""}`} onClick={() => setActiveTab("details")}>
-                    Purchase Details
+                  <button
+                    className={`nav-link d-flex align-items-center gap-2 ${activeTab === "details" ? "active fw-bold" : ""}`}
+                    onClick={() => setActiveTab("details")}
+                    style={{ color: activeTab === "details" ? "#0056b3" : "#007bff" }}
+                  >
+                    <FileText size={18} /> <span>Purchase Details</span>
                   </button>
                 </li>
                 <li className="nav-item">
-                  <button className={`nav-link ${activeTab === "payment" ? "active" : ""}`} onClick={() => setActiveTab("payment")}>
-                    Payment
+                  <button
+                    className={`nav-link d-flex align-items-center gap-2 ${activeTab === "payment" ? "active fw-bold" : ""}`}
+                    onClick={() => setActiveTab("payment")}
+                    style={{ color: activeTab === "payment" ? "#0056b3" : "#007bff" }}
+                  >
+                    <CreditCard size={18} /> <span>Payment</span>
                   </button>
                 </li>
                 <li className="nav-item">
-                  <button className={`nav-link ${activeTab === "inward" ? "active" : ""}`} onClick={() => setActiveTab("inward")}>
-                    Inward Stock
+                  <button
+                    className={`nav-link d-flex align-items-center gap-2 ${activeTab === "inward" ? "active fw-bold" : ""}`}
+                    onClick={() => setActiveTab("inward")}
+                    style={{ color: activeTab === "inward" ? "#0056b3" : "#007bff" }}
+                  >
+                    <Package size={18} /> <span>Inward Stock</span>
                   </button>
                 </li>
               </ul>
+
             </div>
             <div className="card-body">
               {activeTab === "details" && (
                 <div className="row g-3">
-                  <h3 className="text-primary">Purchase Details</h3>
+                  <h3 className="text-primary  fw-bold my-3">Purchase Details</h3>
                   <div className="col-md-6">
                     {/* <p>SupplierName<strong><h5>{formatDate(purchaseDetail?.businessName)}</h5></strong></p> */}
                     <p>Bill No: <strong><h5>{purchaseDetail?.billNo || "N/A"}</h5></strong></p>

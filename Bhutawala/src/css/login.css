@@ -1,0 +1,88 @@
+/* Center the login form */
+.auth-page-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  
+    padding: 20px;
+}
+
+/* Form container */
+.form {
+    max-width: 550px;
+    width: 100%;
+    background: rgb(243, 226, 226);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 15px 15px 46px black;
+    text-align: center;
+}
+
+/* Logo */
+.logo-lg img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Form Title */
+.text-muted {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #6c757d;
+}
+
+/* Labels */
+.form-label {
+    font-weight: 600;
+    
+    margin-bottom: 5px;
+}
+
+/* Password input eye icon */
+.position-relative {
+    position: relative;
+}
+
+.position-relative .btn-link {
+    border: none;
+    background: none;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Remember me checkbox */
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check-label {
+    font-size: 14px;
+    color: #555;
+}
+
+
+/* Forgot password link */
+.text-muted {
+    color: #8e44ad !important;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.text-muted:hover {
+    color: #6c3483 !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .form {
+        padding: 20px;
+    }
+
+    .btn-success {
+        font-size: 16px;
+    }
+}

@@ -23,6 +23,7 @@ import LogOut from "./Admin/LogOut";
 import CreatePassword from "./Admin/CreatePassword";
 import ForgetPassword from "./Admin/ForgetPassword";
 import Profile from "./Admin/Profile";
+import OutwordItem from "./Admin/OutwordItem";
 
 import "./Admin/Style.css";
 
@@ -43,6 +44,7 @@ function App() {
         <Route path="/Purchase/Details/:id" element={<Demo Component={<PurchaseDetails />} />} />
         <Route path="/InwardStock" element={[<InwardStock />]} />
         <Route path="/OutwordMaster" element={<Demo Component={<OutwordMaster />} />} />
+        <Route path="/OutwordItem" element={<Demo Component={<OutwordItem />} />} />
         <Route path="/" element={[<LogIn />]} />
         <Route path="/ResetPassword" element={[<ResetPassword />]} />
         <Route path="/LogOut" element={[<LogOut />]} />

@@ -18,7 +18,7 @@ export default function Sidebar(props) {
         {/* Light Logo*/}
         <a href="index-2.html" className="logo logo-light">
           <span className="logo-sm">
-            <img src="assets/images/logo-sm.png" alt="" height={22} />
+            <img src="assets/images/4.jpg" alt="" style={{ height: 45 }} />
           </span>
           <span className="logo-lg">
             <img src="assets/images/4.jpg" alt="" style={{ height: 45 }} />
@@ -62,7 +62,7 @@ export default function Sidebar(props) {
           {/* item*/}
           <h6 className="dropdown-header">Welcome Anna!</h6>
           <a className="dropdown-item" href="pages-profile.html">
-            <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1" />{" "}
+            <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1" />
             <span className="align-middle">Profile</span>
           </a>
           <a className="dropdown-item" href="apps-chat.html">
@@ -305,9 +305,9 @@ export default function Sidebar(props) {
               <Link className="nav-link menu-link" to="/OutwordMaster">
                 <i class="fas fa-user-tie" /> <span>OutwordMaster</span>
               </Link>
-              {/* <Link className="nav-link menu-link" to="/TransactionYearMaster"> */}
-              {/* <i class="fas fa-history" /> <span>TransactionYear</span> */}
-              {/* </Link> */}
+              <Link className="nav-link menu-link" to="/OutwordItem">
+                <i class="fas fa-history" /> <span>OutwordItem</span>
+              </Link>
             </li>
           </ul>
         </div>

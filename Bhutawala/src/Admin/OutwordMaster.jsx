@@ -1,146 +1,183 @@
-
-import React, { useEffect, useState } from 'react'
-import Outwordpopup from './Popups/Outwordpopup'
-import { getData, postData } from '../API';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { FilterMatchMode } from 'primereact/api';
-import { errorAlert } from '../SweetAlert/SuccessAlert';
-
+import React, { useState, useEffect } from "react";
+import { useFormik } from "formik";
+import { postData, getData } from "../API";
+import { successAlert, errorAlert } from "../SweetAlert/SuccessAlert";
+import { OutwardSchema } from '../Schema';
 export default function OutwordMaster() {
-  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [dataLoading, setDataLoading] = useState(false);
-  const [OutwordMasters, setOutwordMasters] = useState([]);
-  const [OutwordId, setOutwordId] = useState(0);
-  const [globalFilterValue, setGlobalFilterValue] = useState('');
+  const [outwardProducts, setOutwardProducts] = useState([]);
+  const [materials, setMaterials] = useState([]);
 
-  const [filters, setFilters] = useState({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    Reason: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    Givento: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    ContactNo: { value: null, matchMode: FilterMatchMode.CONTAINS }
-  })
-
-  const onGlobalFilterChange = (e) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
-
-    _filters['global'].value = value;
-
-    setFilters(_filters);
-    setGlobalFilterValue(value);
-  };
-  const [initialValue, setInitialValue] = useState({
-    StaffId: "",
-    Reason: "",
-    Givento: "",
-    ContactNo: "",
-    OutwordDate: "",
-  });
-
-  const fetchOutwords = async () => {
-    try {
-      setDataLoading(true);
-      const response = await getData("OutwordMaster/List");
-      console.log(response)
-      if (response.status.toUpperCase() == "OK") {
-        setOutwordMasters(response.result);
-        console.log(response.result);
-      } else {
-        console.log("Something went wrong");
-      }
-    } catch (error) {
-      errorAlert("Error fetching data in component:", error);
-    }
-    finally {
-      setDataLoading(false);
-    }
-  };
-
-  const deleteOutwordMaster = async (Id) => {
-    var conform = await confirmationAlert("Are you sure to delete...?");
-    console.log(conform);
-    if (conform) {
+  useEffect(() => {
+    const fetchMaterials = async () => {
       try {
-        setDataLoading(true);
-        const response = await getData("OutwordMaster/Remove/" + Id);
-        if (response.status.toUpperCase() == "OK") {
-          fetchOutwords();
+        const response = await getData("Material/List");
+        console.log(" Materials API Response:", response);
+
+        if (response.status === "OK") {
+          setMaterials(response.result);
         } else {
-          console.log("Something went wrong");
+          errorAlert("Error", "Something went wrong while fetching materials.");
         }
       } catch (error) {
-        errorAlert("Error fetching data in component:", error);
+
+        console.error(" Fetching Data Error:", error);
       }
-      finally {
-        setDataLoading(false);
-      }
-    }
-  }
-  const fetchOutwordMasterDetail = async (Id) => {
-    try {
-      const response = await getData("OutwordMaster/Details/" + Id);
-      if (response.status.toUpperCase() == "OK") {
-        setInitialValue({
-          StaffId: response.result.staffId,
-          Reason: response.result.reason,
-          Givento: response.result.givento,
-          ContactNo: response.result.contactNo,
-          OutwordDate: response.result.outwordDate,
-        });
-        setOutwordId(response.result.outwordId);
-        setShow(true);
-      } else {
-        console.log("Something went wrong");
-      }
-    } catch (error) {
-      errorAlert("Error fetching data in component:", error);
-    }
-  };
-  const editTemplate = (outwordMaster) => {
-    return <i onClick={() => fetchOutwordMasterDetail(outwordMaster.outwordId)} className='fas fa-edit text-success'></i>;
-  };
-  const deleteTemplate = (outwordMaster) => {
-    return <i onClick={() => deleteOutwordMaster(outwordMaster.outwordId)} className='fas fa-trash text-danger'></i>;
-  };
-  useEffect(() => {
-    fetchOutwords();
+    };
+    fetchMaterials();
   }, []);
+
+  const [initialValue, setInitialValue] = useState({
+    StaffId: "",
+    Givento: "",
+    ContactNo: "",
+    OutwordDate: new Date().toISOString().split("T")[0],
+    Reason: "",
+    MaterialId: "",
+    MaterialName: "",
+    ItemQty: ""
+  });
+  const { values, handleBlur, handleSubmit, handleReset, errors, setFieldValue, handleChange, resetForm } = useFormik({
+    initialValues: initialValue,
+    validationSchema: OutwardSchema,
+    onSubmit: async (values) => {
+      setLoading(true);
+      const masterData = {
+        OutwordId: 0,
+        StaffId: values.StaffId,
+        Givento: values.Givento,
+        ContactNo: values.ContactNo,
+        OutwordDate: values.OutwordDate,
+        Reason: values.Reason,
+        OutwordItems: outwardProducts.map((product) => ({
+          MaterialId: product.MaterialId,
+          Quantity: product.Quantity,
+        })),
+      };
+
+      console.log(" Sending Data:", JSON.stringify(masterData, null, 2));
+      try {
+        const response = await postData("OutwordMaster/Save", masterData);
+        console.log(" API Response:", response);
+        if (response?.status?.toUpperCase() === "OK") {
+          successAlert("Success", response.result || "Outward Entry Saved Successfully!");
+          resetForm();
+          setOutwardProducts([]);
+        } else {
+          throw new Error("Invalid response format");
+        }
+      } catch (error) {
+        console.error(" Save Error:", JSON.stringify(error.response?.data || error, null, 2));
+        const errorMessage =
+          error.response?.data?.title || "Something went wrong while saving.";
+        errorAlert("Error", errorMessage);
+      }
+      setLoading(false);
+    },
+  });
+  const addProduct = () => {
+    if (!values.MaterialId || !values.ItemQty) {
+      errorAlert("Error", "Please fill all product details!");
+      return;
+    }
+    setOutwardProducts([
+      ...outwardProducts,
+      {
+        MaterialId: values.MaterialId,
+        MaterialName: values.MaterialName,
+        Quantity: values.ItemQty,
+      },
+    ]);
+    setFieldValue("MaterialId", "");
+    setFieldValue("MaterialName", "");
+    setFieldValue("ItemQty", "");
+  };
+  const deleteProduct = (index) => {
+    setOutwardProducts(outwardProducts.filter((_, i) => i !== index));
+  };
+  const handleMaterialChange = (e) => {
+    const materialId = e.target.value;
+    const selectedMaterial = materials.find((m) => String(m.materialId) === String(materialId));
+    if (selectedMaterial) {
+      setFieldValue("MaterialId", selectedMaterial.materialId);
+      setFieldValue("MaterialName", selectedMaterial.materialName);
+      setFieldValue("ItemQty", selectedMaterial.qu)
+    }
+  };
   return (
-    <div className="container-fluid" jstcache={0}>
-      <div className="row" jstcache={0}>
-        <div className="col-lg-12">
-          <div className="card">
-            <div className="card-header"><h4 className="card-title mb-0">OutwordMaster</h4></div>
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-8 mb-2">
-                  <button type="button" id='openPopup' onClick={() => setShow(true)} className="open-modal-btn">  Add Outword</button>
-                  <Outwordpopup fetchOutwords={fetchOutwords} OutwordId={OutwordId} setOutwordId={setOutwordId} loading={loading} setLoading={setLoading} initialValue={initialValue} setInitialValue={setInitialValue} show={show} setShow={setShow} />
-                </div>
-                <div className='col-md-4 mb-2'>
-                  <div className="input-group">
-                    <input type="text" className="form-control" value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Search" />
-                    <span className="input-group-text"><i className="fas fa-search"></i> </span>
-                  </div>
-                </div>
-                <div className="col-md-12 table-responsive">
-                  <DataTable stripedRows filters={filters} globalFilterFields={['staff', 'Reason', 'Givento', 'ContactNo', 'OutwordDate']} showGridlines paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} size='small' loading={dataLoading} value={OutwordMasters}>
-                    <Column field="staffId" header="Staff" sortable></Column>
-                    <Column field="reason" header="Reason" sortable></Column>
-                    <Column field="givento" header="Givento" sortable></Column>
-                    <Column field="contactNo" header="ContactNo" sortable></Column>
-                    <Column field="outwordDate" header="OutwordDate" sortable></Column>
-                    <Column body={editTemplate} className='text-center' style={{ width: "50px" }}></Column>
-                    <Column body={deleteTemplate} className='text-center' style={{ width: "50px" }}></Column>
-                  </DataTable>
-                </div>
-              </div>
-            </div>
+    <div className="container">
+      <h3>Outward Master Entry</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-md-4">
+            <b>Staff ID</b>
+            <input type="number" name="StaffId" onChange={handleChange} value={values.StaffId} className="form-control" />
+          </div>
+          <div className="col-md-4">
+            <b>Given To</b> <span className='text-danger'>*{errors.Givento}</span>
+            <input type="text" name="Givento" onChange={handleChange} onBlur={handleBlur} value={values.Givento} className="form-control" />
+          </div>
+          <div className="col-md-4">
+            <b>Contact No</b> <span className='text-danger'>*{errors.ContactNo}</span>
+            <input type="text" name="ContactNo" onChange={handleChange} onBlur={handleBlur} value={values.ContactNo} className="form-control" />
+          </div>
+          <div className="col-md-4">
+            <b>Date</b> <span className='text-danger'>*{errors.OutwordDate}</span>
+            <input type="date" name="OutwordDate" onChange={handleChange} onBlur={handleBlur} value={values.OutwordDate} className="form-control" />
+          </div>
+          <div className="col-md-6">
+            <b>Reason</b> <span className='text-danger'>*{errors.Reason}</span>
+            <textarea name="Reason" onChange={handleChange} onBlur={handleBlur} value={values.Reason} className="form-control"></textarea>
           </div>
         </div>
-      </div>
+        <hr />
+        <h4>Add Product</h4>
+        <div className="row">
+          <div className="col-md-4">
+            <label>Material</label>
+            <select onChange={handleMaterialChange} name="MaterialId" className="form-select" value={values.MaterialId}>
+              <option value="">Select Material</option>
+              {materials.map((o) => (
+                <option key={o.materialId} value={o.materialId}>
+                  {o.materialName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-2">
+            <b>Quantity</b>
+            <input type="number" name="ItemQty" onChange={handleChange} value={values.ItemQty} className="form-control" />
+          </div>
+          <div className="col-md-2 d-flex align-items-end">
+            <button type="button" onClick={addProduct} className="btn btn-primary"> Add Product </button>
+          </div>
+        </div>
+        <hr />
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>Material Name</th>
+              <th>Quantity</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {outwardProducts.map((item, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{item.MaterialName}</td>
+                <td>{item.Quantity}</td>
+                <td>
+                  <button type="button" className="btn btn-danger btn-sm" onClick={() => deleteProduct(index)}> Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button type="submit" className="btn btn-success mt-3" disabled={loading}>
+          {loading ? "Saving..." : "Save Outward Entry"}
+        </button>
+      </form>
     </div>
-  )
+  );
 }

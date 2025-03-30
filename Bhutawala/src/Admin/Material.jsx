@@ -24,9 +24,7 @@ export default function Material() {
   const onGlobalFilterChange = (e) => {
     const value = e.target.value;
     let _filters = { ...filters };
-
     _filters['global'].value = value;
-
     setFilters(_filters);
     setGlobalFilterValue(value);
   };

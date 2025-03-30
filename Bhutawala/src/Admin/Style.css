@@ -236,4 +236,7 @@
   box-shadow: 0 0 18px rgba(69, 0, 95, 0.8);
   transform: scale(1.1);
 }
-
+.nav {
+  color: #007bff ; 
+  transition: color 0.3s ease-in-out;
+}

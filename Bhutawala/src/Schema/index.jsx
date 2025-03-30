@@ -1,8 +1,8 @@
 import * as Yup from "yup";
 
 export const LogInSchema = Yup.object().shape({
-    UserName: Yup.string().required("Required"),
-    Password: Yup.string().required("Required")
+  UserName: Yup.string().required("Required"),
+  Password: Yup.string().required("Required")
 });
 
 export const CategorySchema = Yup.object().shape({
@@ -238,7 +238,7 @@ export const ResetPasswordSchema = Yup.object().shape({
     .required("Old password is required"),
 
   newPasswd: Yup.string()
-    .min(6, "Password must be at least 6 characters") 
+    .min(6, "Password must be at least 6 characters")
     .required("New password is required"),
 
   Password: Yup.string()
@@ -317,18 +317,24 @@ export const DetailSchema = Yup.object().shape({
 //
 //
 
-export const OutwordSchema = Yup.object({
-  
-  Reason: Yup.string().required(' required'),
-  Givento: Yup.string().required(' required'),
-  ContactNo: Yup.string()
-    .matches(/^[0-9]{10}$/, ' 10 digits')
-    .required(' required'),
- 
+export const OutwordItemsSchema = Yup.object({
+  // materialId: Yup.number()
+  // .required("Material is required")
+  // .positive("Invalid Material ID"),
+  // outwordId: Yup.number()
+  // .required("Outword ID is required")
+  // .positive("Invalid Outword ID"),
+  qty: Yup.number()
+    .required("Quantity is required")
+    .min(1, "Quantity must be at least 1"),
 });
-
-
-
+export const OutwardSchema = Yup.object().shape({
+  // StaffId: Yup.number().required("Staff ID is required"),
+  Givento: Yup.string().required(" required"),
+  ContactNo: Yup.string().matches(/^\d{10}$/, "Invalid contact number").required("required"),
+  OutwordDate: Yup.date().required(" required"),
+  Reason: Yup.string().optional()
+});
 
 
 
