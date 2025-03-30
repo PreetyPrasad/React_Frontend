@@ -326,18 +326,12 @@ export default function InvoiceMaster() {
                       </tr>
                       <tr>
                         <td colSpan="3">
-                          <strong>
-                            Remaining Balance: <span style={{ color: 'red' }}>₹ {remainingBalance.toLocaleString('en-IN')}</span>
+                          <strong> Remaining Balance: <span style={{ color: 'red' }}>₹ {remainingBalance.toLocaleString('en-IN')}</span>
                           </strong>
                         </td>
                       </tr>
                       <div className="col-md-12 mb-4" >
-                        <h5 style={{
-                          position: 'absolute',
-                          right: '0',
-                          marginRight: '15px',
-                          whiteSpace: 'nowrap'
-                        }}>
+                        <h5 style={{ position: 'absolute', right: '0', marginRight: '15px', whiteSpace: 'nowrap' }}>
                           Total Amount: <strong>₹ {totalInvoiceAmount.toLocaleString('en-IN')}</strong>
                         </h5>
                       </div>
@@ -419,7 +413,6 @@ export default function InvoiceMaster() {
                         onClick={() => generatePDF(InvoiceNo)} disabled={loading}>
                         {loading ? "Processing..." : "Generate PDF"}
                       </button>*/}
-
                       {/* <button type="submit" className="btn btn-primary btn-lg" disabled={loading}> */}
                       {/* {loading ? "Processing..." : "Generate Receipt"} */}
                       {/* </button> */}

@@ -5,7 +5,6 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { FilterMatchMode } from 'primereact/api';
 import { errorAlert } from '../SweetAlert/SuccessAlert';
-
 export default function OutwordItem() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -13,9 +12,12 @@ export default function OutwordItem() {
   const [OutwordItems, setOutwordItems] = useState([]);
   const [OutwordStockId, setOutwordStockId] = useState(0);
   const [globalFilterValue, setGlobalFilterValue] = useState('');
-
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    materialName: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    givento: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    contactNo: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    outwordDate: { value: null, matchMode: FilterMatchMode.CONTAINS }
   })
 
   const onGlobalFilterChange = (e) => {
@@ -32,7 +34,6 @@ export default function OutwordItem() {
     OutwordId: "",
     Qty: ""
   });
-
   const fetchOutwords = async () => {
     try {
       setDataLoading(true);
@@ -51,28 +52,9 @@ export default function OutwordItem() {
       setDataLoading(false);
     }
   };
-
-  const deleteOutwordItem = async (Id) => {
-    if (window.confirm("Are you sure to delete...?")) {
-      try {
-        const response = await getData("OutwordItem/Remove/" + Id);
-        if (response.status == "OK") {
-          fetchOutwords();
-        } else {
-          console.log("Something went wrong");
-        }
-      } catch (error) {
-        console.error("Error fetching data in component:", error);
-      }
-    }
-  }
-  const deleteTemplate = (outwordItem) => {
-    return <i onClick={() => deleteOutwordItem(outwordItem.OutwordStockId)} className='fas fa-trash text-danger'></i>;
-  };
   useEffect(() => {
     fetchOutwords();
   }, []);
-
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
@@ -94,15 +76,13 @@ export default function OutwordItem() {
                   </div>
                 </div>
                 <div className="col-md-12 table-responsive">
-                  <DataTable stripedRows filters={filters} globalFilterFields={[]} showGridlines paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} size='small' loading={dataLoading} value={OutwordItems}>
+                  <DataTable stripedRows filters={filters} globalFilterFields={['material.materialName', 'qty', 'givento', 'contactNo', 'outwordDate', 'reason']} showGridlines paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} size='small' loading={dataLoading} value={OutwordItems}>
                     <Column field="materialName" header="MaterialName" sortable></Column>
-                    {/* <Column field="price" header="Price" sortable></Column> */}
                     <Column field="qty" header="Qty" sortable></Column>
                     <Column field="givento" header="GivenTo" sortable></Column>
                     <Column field="contactNo" header="Contact No" sortable></Column>
                     <Column field="reason" header="Reason" sortable></Column>
                     <Column field="outwordDate" header="OutwordDate" sortable body={(rowData) => formatDate(rowData.outwordDate)}></Column>
-                    <Column body={deleteTemplate} className='text-center' style={{ width: "50px" }}></Column>
                   </DataTable>
                 </div>
               </div>

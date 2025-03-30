@@ -1,5 +1,3 @@
-
-import { right } from "@popperjs/core";
 import { Link } from "react-router-dom";
 export default function Sidebar(props) {
   return (
@@ -18,10 +16,10 @@ export default function Sidebar(props) {
         {/* Light Logo*/}
         <a href="index-2.html" className="logo logo-light">
           <span className="logo-sm">
-            <img src="assets/images/4.jpg" alt="" style={{ height: 45 }} />
+            <img src="/assets/images/Bhutawala_images/BT-logo.jpeg" alt="" height={50} />
           </span>
           <span className="logo-lg">
-            <img src="assets/images/4.jpg" alt="" style={{ height: 45 }} />
+            <img src="/assets/images/Bhutawala_images/BT-logo.jpeg" alt="" height={100} width={200} />
           </span>
         </a>
         <button
@@ -62,7 +60,7 @@ export default function Sidebar(props) {
           {/* item*/}
           <h6 className="dropdown-header">Welcome Anna!</h6>
           <a className="dropdown-item" href="pages-profile.html">
-            <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1" />
+            <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1" />{" "}
             <span className="align-middle">Profile</span>
           </a>
           <a className="dropdown-item" href="apps-chat.html">
@@ -112,8 +110,18 @@ export default function Sidebar(props) {
           <div id="two-column-menu"></div>
           <ul className="navbar-nav" id="navbar-nav">
             <li className="menu-title">
-              <span data-key="t-menu"></span>
+              <span data-key="t-menu">Menu</span>
             </li>
+            <Link className="nav-link menu-link" to="/TransactionYear">
+              <i class="fas fa-calendar-alt"></i> <span>TransactionYear</span>
+            </Link>
+            <Link className="nav-link menu-link" to="/Category">
+              <i class="fas fa-folder" /> <span>Category</span>
+            </Link>
+            <Link className="nav-link menu-link" to="/Material">
+              <i class="fas fa-box" /> <span>Material</span>
+            </Link>
+
             <li className="nav-item">
               <a
                 className="nav-link menu-link"
@@ -123,97 +131,30 @@ export default function Sidebar(props) {
                 aria-expanded="false"
                 aria-controls="sidebarDashboards"
               >
-                <i className="ri-dashboard-2-line" />{" "}
-                <span data-key="t-dashboards">Dashboards</span>
+                <i className="fas fa-shopping-bag"></i> {/* Shopping Bag */}
+                <span data-key="t-dashboards">Purchases</span>
               </a>
+
               <div className="collapse menu-dropdown" id="sidebarDashboards">
                 <ul className="nav nav-sm flex-column">
                   <li className="nav-item">
-                    <a
-                      href="dashboard-analytics.html"
-                      className="nav-link"
-                      data-key="t-analytics"
-                    >
-                      {" "}
-                      Analytics{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="dashboard-crm.html"
-                      className="nav-link"
-                      data-key="t-crm"
-                    >
-                      {" "}
-                      CRM{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="index-2.html"
-                      className="nav-link"
-                      data-key="t-ecommerce"
-                    >
-                      {" "}
-                      Ecommerce{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="dashboard-crypto.html"
-                      className="nav-link"
-                      data-key="t-crypto"
-                    >
-                      {" "}
-                      Crypto{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="dashboard-projects.html"
-                      className="nav-link"
-                      data-key="t-projects"
-                    >
-                      {" "}
-                      Projects{" "}
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="dashboard-nft.html"
-                      className="nav-link"
-                      data-key="t-nft"
-                    >
-                      {" "}
-                      NFT
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="dashboard-job.html"
-                      className="nav-link"
-                      data-key="t-job"
-                    >
-                      Job
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="dashboard-blog.html" className="nav-link">
-                      <span data-key="t-blog">Blog</span>{" "}
-                      <span className="badge bg-success" data-key="t-new">
-                        New
-                      </span>
-                    </a>
+                    <Link className="nav-link menu-link" to="/Supplier">
+                      <i class="fas fa-truck" /> <span>Supplier</span>
+                    </Link>
+
+                    <Link className="nav-link menu-link" to="/PurchaseMaster">
+                      <i className="fas fa-shopping-cart"></i>
+                      <span>Purchase Master</span>
+                    </Link>
+                    <Link className="nav-link menu-link" to="/PurchaseReturn">
+                      <i className="fas fa-exchange-alt"></i>
+                      <span>Purchase Return</span>
+                    </Link>
                   </li>
                 </ul>
               </div>
             </li>{" "}
-            <Link className="nav-link menu-link" to="/TransactionYearMaster">
-              <i class="fas fa-history" /> <span>TransactionYear</span>
-            </Link>
-            <Link className="nav-link menu-link" to="/StaffMaster">
-              <i class="fas fa-user-tie" /> <span>StaffMaster</span>
-            </Link>
+            {/* end Dashboard Menu */}
             <li className="nav-item">
               <a
                 className="nav-link menu-link"
@@ -223,59 +164,20 @@ export default function Sidebar(props) {
                 aria-expanded="false"
                 aria-controls="Material"
               >
-                <i className="fas fa-box-open me-2"></i>
-                <span data-key="t-landing">Material</span>
+                <i className="fas fa-box-open"></i>
+                <span>Sales Return</span>
               </a>
               <div className="collapse menu-dropdown" id="Material">
                 <ul className="nav nav-sm flex-column">
                   <li className="nav-item">
-                    <Link className="nav-link menu-link" to="/Category">
-                      <i class="fas fa-box" /> <span>Category</span>
-                    </Link>
-                    <Link className="nav-link menu-link" to="/Material">
-                      <i className="fas fa-box-open me-2" /> <span>Material</span>
+                    <Link className="nav-link menu-link" to="/SalesReturn">
+                      <i className="fas fa-reply"></i>
+                      <span>Sales Return</span>
                     </Link>
                   </li>
                 </ul>
               </div>
             </li>{" "}
-            <li className="nav-item">
-              <a
-                className="nav-link menu-link"
-                href="#sidebarLanding"
-                data-bs-toggle="collapse"
-                role="button"
-                aria-expanded="false"
-                aria-controls="sidebarLanding"
-              >
-                <i className="fas fa-wallet me-2"></i>
-                <span data-key="t-landing">Purchase</span>
-              </a>
-              <div className="collapse menu-dropdown" id="sidebarLanding">
-                <ul className="nav nav-sm flex-column">
-                  <li className="nav-item">
-                    <Link className="nav-link menu-link" to="/Supplier">
-                      <i class="fas fa-handshake" /> <span>Supplier</span>
-                    </Link>
-                    <Link to="/PurchaseMaster" className="nav-link">
-                      <i className="fas fa-wallet me-2"></i>
-                      <span>Purchase</span>
-                    </Link>
-
-                    <li className="nav-item">
-                      <Link to="/PurchaseReturn" className="nav-link">
-                        <i className="fas fa-undo-alt me-2"></i>
-                        <span data-key="t-landing">PurchaseReturn</span>
-                      </Link>
-                    </li>
-                  </li>
-                </ul>
-              </div>
-              <div className="collapse menu-dropdown" id="sidebarLanding">
-                <ul className="nav nav-sm flex-column">
-                </ul>
-              </div>
-            </li>
             <li className="nav-item">
               <a
                 className="nav-link menu-link"
@@ -285,33 +187,40 @@ export default function Sidebar(props) {
                 aria-expanded="false"
                 aria-controls="Invoices"
               >
-                <i className="fas fa-file-invoice me-2"></i>
-                <span data-key="t-base-ui">Invoice</span>
+                <i className="fas fa-file-invoice"></i>
+                <span data-key="">Invoices</span>
               </a>
+
               <div className="collapse menu-dropdown" id="Invoices">
                 <ul className="nav nav-sm flex-column">
                   <li className="nav-item">
                     <Link className="nav-link menu-link" to="/InvoiceMaster">
-                      <i className="fas fa-file-invoice" /> <span>InvoiceMaster</span>
+                      <i className="fas fa-file-invoice"></i>
+                      <span>Invoice Master</span>
+
                     </Link>
-                    <Link className="nav-link menu-link" to="/InvoiceDetail">
-                      <i class="fas fa-receipt" /> <span>InvoiceDetail</span>
+                    <Link className="nav-link menu-link" to="/Staff/Detail">
+                      <i class="fas fa-table" /> <span>InvoiceDetail</span>
                     </Link>
-                  </li>
-                  <li className="nav-item">
+                    <Link className="nav-link menu-link" to="/CustomerDues">
+                      <i className="fas fa-money-bill-wave"></i>
+                      <span>Customer Dues</span>
+
+                    </Link>
+                    <Link className="nav-link menu-link" to="/CustomerPayments">
+                      <i className="fas fa-arrows-rotate"></i>
+                      <span>Customer Payments</span>
+                    </Link>
                   </li>
                 </ul>
               </div>
               <Link className="nav-link menu-link" to="/OutwordMaster">
-                <i class="fas fa-user-tie" /> <span>OutwordMaster</span>
-              </Link>
-              <Link className="nav-link menu-link" to="/OutwordItem">
-                <i class="fas fa-history" /> <span>OutwordItem</span>
+                <i className="fas fa-hand-holding-dollar"></i>
+                <span>Outward Master</span>
               </Link>
             </li>
           </ul>
         </div>
-        {/* Sidebar */}
       </div>
       <div className="sidebar-background" />
     </div>

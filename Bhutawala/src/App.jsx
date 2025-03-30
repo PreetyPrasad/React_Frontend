@@ -24,6 +24,7 @@ import CreatePassword from "./Admin/CreatePassword";
 import ForgetPassword from "./Admin/ForgetPassword";
 import Profile from "./Admin/Profile";
 import OutwordItem from "./Admin/OutwordItem";
+import Dashboard from "./Admin/Dashboard";
 
 import "./Admin/Style.css";
 
@@ -51,6 +52,8 @@ function App() {
         <Route path="/CreatePassword" element={[<CreatePassword />]} />
         <Route path="/ForgetPassword" element={[<ForgetPassword />]} />
         <Route path="/Profile" element={[<Demo Component={<Profile />} />]} />
+        <Route path="/Dashboard" element={[<Demo Component={<Dashboard />} />]} />
+
       </Routes>
     </BrowserRouter>
   );

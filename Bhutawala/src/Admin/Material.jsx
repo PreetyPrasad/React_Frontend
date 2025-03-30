@@ -13,7 +13,6 @@ export default function Material() {
   const [Materials, setMaterials] = useState([]);
   const [MaterialId, setMaterialId] = useState(0);
   const [globalFilterValue, setGlobalFilterValue] = useState('');
-
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     categoryName: { value: null, matchMode: FilterMatchMode.CONTAINS },
